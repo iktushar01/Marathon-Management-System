@@ -3,6 +3,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
+import MagneticCursor from "../../Components/Buttons/MagneticCursor";
 
 const bannerData = [
   {
@@ -73,16 +74,7 @@ export default function BannerSlider() {
                     {description}
                   </motion.p>
 
-                  <motion.button
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-yellow-400 text-black px-6 py-2 font-semibold rounded-lg shadow-md hover:bg-yellow-300 transition cursor-pointer"
-                  >
-                    Explore Events
-                  </motion.button>
+                  <MagneticCursor></MagneticCursor>
                 </div>
               </div>
             </SwiperSlide>
