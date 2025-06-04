@@ -4,7 +4,7 @@ import { FaLinkedin, FaGithub, FaFacebook } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="relative mt-16 bg-black text-white">
+    <div className="relative  bg-black text-white">
       <svg
         className="absolute top-0 w-full h-6 -mt-5 sm:-mt-10 sm:h-16 text-black"
         preserveAspectRatio="none"
