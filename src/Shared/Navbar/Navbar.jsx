@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
-import ButtonHover9 from "../../Components/Buttons/ButtonHover9";
+import RegisterButton from "../../Components/Buttons/RegisterButton";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +57,7 @@ const Navbar = () => {
       </NavLink>
       <NavLink to="/register">
         <div className="mt-2 lg:mt-0">
-          <ButtonHover9 />
+          <RegisterButton />
         </div>
       </NavLink>
     </>
