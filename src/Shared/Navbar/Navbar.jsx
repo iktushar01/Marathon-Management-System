@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import ButtonHover9 from "../../Components/Buttons/ButtonHover9";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,13 +14,11 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
       if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        setShowNavbar(false); 
+        setShowNavbar(false);
       } else {
-        setShowNavbar(true); 
+        setShowNavbar(true);
       }
-
       setLastScrollY(currentScrollY);
     };
 
@@ -27,12 +26,15 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  const underlineHover =
+    "relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-yellow-500 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100";
+
   const navLinks = (
     <>
       <NavLink
         to="/"
         className={({ isActive }) =>
-          isActive ? "text-blue-700 font-semibold" : "hover:text-blue-600"
+          `${isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"} ${underlineHover}`
         }
       >
         Home
@@ -40,31 +42,23 @@ const Navbar = () => {
       <NavLink
         to="/about"
         className={({ isActive }) =>
-          isActive ? "text-blue-700 font-semibold" : "hover:text-blue-600"
+          `${isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"} ${underlineHover}`
         }
       >
         About
       </NavLink>
       <NavLink
-        to="/contact"
-        className={({ isActive }) =>
-          isActive ? "text-blue-700 font-semibold" : "hover:text-blue-600"
-        }
-      >
-        Contact
-      </NavLink>
-      <NavLink
         to="/signin"
         className={({ isActive }) =>
-          isActive ? "text-blue-700 font-semibold" : "hover:text-blue-600"
+          `${isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"} ${underlineHover}`
         }
       >
         Sign In
       </NavLink>
       <NavLink to="/register">
-        <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 mt-2 lg:mt-0">
-          Register
-        </button>
+        <div className="mt-2 lg:mt-0">
+          <ButtonHover9 />
+        </div>
       </NavLink>
     </>
   );
@@ -74,26 +68,25 @@ const Navbar = () => {
       initial={{ y: 0 }}
       animate={{ y: showNavbar ? 0 : -80 }}
       transition={{ duration: 0.4, ease: "easeInOut", type: "tween" }}
-      className="fixed border-b bg-white w-full z-50 shadow"
+      className="fixed border-b border-yellow-400 bg-black w-full z-50 shadow"
     >
-      <div className="container mx-auto flex justify-between items-center px-4 py-3">
+      <div className="container mx-auto flex justify-between items-center px-4 py-0 md:py-3">
         <div className="flex items-center">
           <img
             className="w-14"
             src="https://i.postimg.cc/MpXx3PwJ/stridez.png"
             alt="stridez-logo"
           />
-          <div className="text-2xl font-bold text-blue-700 ml-2">Stridez</div>
+          <div className="text-2xl font-bold text-yellow-400 ml-2">Stridez</div>
         </div>
 
-        <div className="lg:hidden text-3xl cursor-pointer" onClick={toggleMenu}>
+        <div className="lg:hidden text-3xl text-yellow-400 cursor-pointer" onClick={toggleMenu}>
           {isOpen ? <FiX /> : <FiMenu />}
         </div>
 
-        <nav className="hidden lg:flex gap-6 items-center">{navLinks}</nav>
+        <nav className="hidden lg:flex gap-6 items-center text-white font-semibold">{navLinks}</nav>
       </div>
 
-      {/* Mobile Menu with animation */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -102,7 +95,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeInOut", type: "tween" }}
-            className="bg-white p-5 flex flex-col gap-4 shadow-lg lg:hidden"
+            className="bg-black text-yellow-400 text-center p-5 flex flex-col gap-4 shadow-lg lg:hidden"
           >
             {navLinks}
           </motion.div>
