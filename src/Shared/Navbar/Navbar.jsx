@@ -7,19 +7,51 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const navLinks = (
-    <>
-      <NavLink to="/" className="hover:text-blue-600">Home</NavLink>
-      <NavLink to="/about" className="hover:text-blue-600">About</NavLink>
-      <NavLink to="/contact" className="hover:text-blue-600">Contact</NavLink>
-      <NavLink to="/signin" className="hover:text-blue-600">Sign In</NavLink>
-      
-      <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 mt-2 lg:mt-0">Register </button>
-    </>
-  );
+ const navLinks = (
+  <>
+    <NavLink
+      to="/"
+      className={({ isActive }) =>
+        isActive ? "text-blue-700 font-semibold" : "hover:text-blue-600"
+      }
+    >
+      Home
+    </NavLink>
+    <NavLink
+      to="/about"
+      className={({ isActive }) =>
+        isActive ? "text-blue-700 font-semibold" : "hover:text-blue-600"
+      }
+    >
+      About
+    </NavLink>
+    <NavLink
+      to="/contact"
+      className={({ isActive }) =>
+        isActive ? "text-blue-700 font-semibold" : "hover:text-blue-600"
+      }
+    >
+      Contact
+    </NavLink>
+    <NavLink
+      to="/signin"
+      className={({ isActive }) =>
+        isActive ? "text-blue-700 font-semibold" : "hover:text-blue-600"
+      }
+    >
+      Sign In
+    </NavLink>
+    <NavLink to="/register">
+      <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 mt-2 lg:mt-0">
+        Register
+      </button>
+    </NavLink>
+  </>
+);
+
 
   return (
-    <header className="shadow-md bg-white fixed top-0 left-0 w-full z-50">
+    <header className="border-2 bg-white fixed top-2 left-0 w-full z-50">
       <div className="container mx-auto flex justify-between items-center px-4 py-3">
        <div className="flex justify-center items-center">
          <div><img className="w-14" src="https://i.postimg.cc/MpXx3PwJ/stridez.png" alt="stridez-logo" /></div>
