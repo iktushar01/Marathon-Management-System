@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import RegisterButton from "../../Components/Buttons/RegisterButton";
+import Logo from "../../Components/Logo/Logo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,23 +35,29 @@ const Navbar = () => {
       <NavLink
         to="/"
         className={({ isActive }) =>
-          `${isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"} ${underlineHover}`
+          `${
+            isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"
+          } ${underlineHover}`
         }
       >
         Home
       </NavLink>
       <NavLink
-        to="/about"
+        to="/marathons"
         className={({ isActive }) =>
-          `${isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"} ${underlineHover}`
+          `${
+            isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"
+          } ${underlineHover}`
         }
       >
-        About
+        Marathons
       </NavLink>
       <NavLink
         to="/signin"
         className={({ isActive }) =>
-          `${isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"} ${underlineHover}`
+          `${
+            isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"
+          } ${underlineHover}`
         }
       >
         Sign In
@@ -71,20 +78,17 @@ const Navbar = () => {
       className="fixed border-b border-yellow-400 bg-black w-full z-50 shadow"
     >
       <div className="container mx-auto flex justify-between items-center px-4 py-0 md:py-3">
-        <div className="flex items-center">
-          <img
-            className="w-14"
-            src="https://i.postimg.cc/MpXx3PwJ/stridez.png"
-            alt="stridez-logo"
-          />
-          <div className="text-2xl font-bold text-yellow-400 ml-2">Stridez</div>
-        </div>
-
-        <div className="lg:hidden text-3xl text-yellow-400 cursor-pointer" onClick={toggleMenu}>
+        <Logo></Logo>
+        <div
+          className="lg:hidden text-3xl text-yellow-400 cursor-pointer"
+          onClick={toggleMenu}
+        >
           {isOpen ? <FiX /> : <FiMenu />}
         </div>
 
-        <nav className="hidden lg:flex gap-6 items-center text-white font-semibold">{navLinks}</nav>
+        <nav className="hidden lg:flex gap-6 items-center text-white font-semibold">
+          {navLinks}
+        </nav>
       </div>
 
       <AnimatePresence>
