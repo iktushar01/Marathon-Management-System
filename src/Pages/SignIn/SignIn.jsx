@@ -31,7 +31,7 @@ const SignIn = () => {
       </div>
 
       {/* Login Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center py-10">
+      <div className="w-full md:w-1/2 flex items-center justify-center py-10 bg-[url('https://i.postimg.cc/5N2L0MJd/nordwood-themes-R53t-Tg6-J4c-unsplash.jpg')] bg-cover bg-center min-h-screen">
         <form className="w-80 space-y-5 my-30 md:my-0">
           <h2 className="text-2xl font-semibold text-center text-gray-800">Login</h2>
 

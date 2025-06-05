@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
@@ -25,15 +25,18 @@ const Register = () => {
             Join <span className="text-yellow-400">Our Stridez</span>
           </h1>
           <p className="mt-4 text-sm lg:text-base">
-            Register now to manage and participate in marathons with our full-stack platform built for both organizers and runners.
+            Register now to manage and participate in marathons with our
+            full-stack platform built for both organizers and runners.
           </p>
         </div>
       </div>
 
       {/* Register Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center py-10">
+      <div className="w-full md:w-1/2 flex items-center justify-center py-10 bg-[url('https://i.postimg.cc/5N2L0MJd/nordwood-themes-R53t-Tg6-J4c-unsplash.jpg')] bg-cover bg-center min-h-screen">
         <form className="w-80 space-y-5 my-30 md:my-0">
-          <h2 className="text-2xl font-semibold text-center text-gray-800">Register</h2>
+          <h2 className="text-2xl font-semibold text-center text-gray-800">
+            Register
+          </h2>
 
           <input
             type="text"
@@ -74,7 +77,7 @@ const Register = () => {
           </button>
 
           <p className="text-sm text-center">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Link to="/signin" className="text-yellow-500 underline">
               Login
             </Link>
