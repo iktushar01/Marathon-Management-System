@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom'; // Corrected import
+import { Link } from 'react-router-dom'; 
+import { AuthContext } from '../../Contexts/AuthContext';
 
 const SignIn = () => {
+  const {signInUser} = useContext(AuthContext)
+
+  const handleSignIn = e => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    const userData = { email, password };
+    console.log(userData);
+
+     signInUser(email, password)
+    .then(result =>{
+      console.log(result.user)
+    })
+    .catch(error =>{
+      console.log(error)
+    })
+  };
+
+  
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left Side with Background Video */}
@@ -32,10 +54,11 @@ const SignIn = () => {
 
       {/* Login Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center py-10 bg-[url('https://i.postimg.cc/5N2L0MJd/nordwood-themes-R53t-Tg6-J4c-unsplash.jpg')] bg-cover bg-center min-h-screen">
-        <form className="w-80 space-y-5 my-30 md:my-0">
+        <form onSubmit={handleSignIn} className="w-80 space-y-5 my-30 md:my-0">
           <h2 className="text-2xl font-semibold text-center text-gray-800">Login</h2>
 
           <input
+            name="email"
             type="email"
             placeholder="Email Address"
             className="w-full px-4 py-2 border-2 border-yellow-400 rounded focus:outline-none"
@@ -43,6 +66,7 @@ const SignIn = () => {
           />
 
           <input
+            name="password"
             type="password"
             placeholder="Password"
             className="w-full px-4 py-2 border-2 border-yellow-400 rounded focus:outline-none"
