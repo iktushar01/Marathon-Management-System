@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
-import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom'; 
-import { AuthContext } from '../../Contexts/AuthContext';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../Contexts/AuthContext";
+import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 
 const SignIn = () => {
-  const {signInUser} = useContext(AuthContext)
+  const { signInUser } = useContext(AuthContext);
 
-  const handleSignIn = e => {
+  const handleSignIn = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
@@ -14,16 +14,14 @@ const SignIn = () => {
     const userData = { email, password };
     console.log(userData);
 
-     signInUser(email, password)
-    .then(result =>{
-      console.log(result.user)
-    })
-    .catch(error =>{
-      console.log(error)
-    })
+    signInUser(email, password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
-  
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -37,7 +35,10 @@ const SignIn = () => {
           playsInline
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
         >
-          <source src="https://res.cloudinary.com/dv13zq4xo/video/upload/v1749092827/Sony_A7S_III_X_Fitness_Commercial_s0auyl.mp4" type="video/mp4" />
+          <source
+            src="https://res.cloudinary.com/dv13zq4xo/video/upload/v1749092827/Sony_A7S_III_X_Fitness_Commercial_s0auyl.mp4"
+            type="video/mp4"
+          />
           Your browser does not support the video tag.
         </video>
 
@@ -47,7 +48,10 @@ const SignIn = () => {
             Welcome to <span className="text-yellow-400">Our Stridez</span>
           </h1>
           <p className="mt-4 text-sm lg:text-base">
-            The <strong>Marathon Management System</strong> helps organize and manage marathon events by connecting organizers and participants. Sign up to access dashboards, register for events, and manage your progress easily.
+            The <strong>Marathon Management System</strong> helps organize and
+            manage marathon events by connecting organizers and participants.
+            Sign up to access dashboards, register for events, and manage your
+            progress easily.
           </p>
         </div>
       </div>
@@ -55,7 +59,14 @@ const SignIn = () => {
       {/* Login Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center py-10 bg-[url('https://i.postimg.cc/5N2L0MJd/nordwood-themes-R53t-Tg6-J4c-unsplash.jpg')] bg-cover bg-center min-h-screen">
         <form onSubmit={handleSignIn} className="w-80 space-y-5 my-30 md:my-0">
-          <h2 className="text-2xl font-semibold text-center text-gray-800">Login</h2>
+          <h2 className="text-2xl font-semibold text-center text-gray-800">
+            Login
+          </h2>
+
+          <GoogleLogin></GoogleLogin>
+
+            <div className="divider divider-warning">Or</div>
+
 
           <input
             name="email"
@@ -87,17 +98,6 @@ const SignIn = () => {
                 Register
               </Link>
             </p>
-          </div>
-
-          {/* Google Login */}
-          <div className="text-center">
-            <button
-              type="button"
-              className="flex items-center gap-2 justify-center border-2 border-yellow-400 py-2 w-full rounded hover:bg-yellow-50 transition"
-            >
-              <FcGoogle size={22} />
-              Sign in with Google
-            </button>
           </div>
         </form>
       </div>

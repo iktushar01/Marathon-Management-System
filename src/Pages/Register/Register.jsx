@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContext";
+import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 
 const Register = () => {
   const {createUser} = useContext(AuthContext)
@@ -58,6 +59,10 @@ const Register = () => {
           <h2 className="text-2xl font-semibold text-center text-gray-800">
             Register
           </h2>
+
+          <GoogleLogin></GoogleLogin>
+
+            <div className="divider divider-warning">Or</div>
 
           <input
             type="text"
