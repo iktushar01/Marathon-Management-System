@@ -2,6 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Register = () => {
+  const handleRegister = e => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const photoURL = form.photoURL.value;
+    const password = form.password.value;
+    const userData = {name , email, photoURL, password};
+    console.log(userData)
+  }
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left Side with Background Video */}
@@ -33,7 +43,7 @@ const Register = () => {
 
       {/* Register Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center py-10 bg-[url('https://i.postimg.cc/5N2L0MJd/nordwood-themes-R53t-Tg6-J4c-unsplash.jpg')] bg-cover bg-center min-h-screen">
-        <form className="w-80 space-y-5 my-30 md:my-0">
+        <form onSubmit={handleRegister} className="w-80 space-y-5 my-30 md:my-0">
           <h2 className="text-2xl font-semibold text-center text-gray-800">
             Register
           </h2>
