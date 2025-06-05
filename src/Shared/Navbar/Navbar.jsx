@@ -5,22 +5,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import RegisterButton from "../../Components/Buttons/RegisterButton";
 import Logo from "../../Components/Logo/Logo";
 import { AuthContext } from "../../Contexts/AuthContext";
+import LogOutBtn from "../../Components/Buttons/LogOutBtn";
 
 const Navbar = () => {
-  const { user , signOutUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const handleSignOut = () =>{
-    signOutUser()
-    .then(() =>{
-      console.log('signout user')
-    })
-    .catch(error =>{
-      console.log(error)
-    })
-  }
+  // const handleSignOut = () =>{
+  //   signOutUser()
+  //   .then(() =>{
+  //     console.log('signout user')
+  //   })
+  //   .catch(error =>{
+  //     console.log(error)
+  //   })
+  // }
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -65,7 +66,10 @@ const Navbar = () => {
         Marathons
       </NavLink>
       {user ? (
-        <button onClick={handleSignOut} className="btn">SignOut</button>
+        <>
+       <div className="flex justify-center"> <LogOutBtn></LogOutBtn></div>
+        </>
+       
       ) : (
         <>
           {" "}
