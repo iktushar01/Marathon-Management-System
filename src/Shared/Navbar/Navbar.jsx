@@ -65,6 +65,16 @@ const Navbar = () => {
       >
         Marathons
       </NavLink>
+      <NavLink
+        to="/dashboard"
+        className={({ isActive }) =>
+          `${
+            isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"
+          } ${underlineHover}`
+        }
+      >
+        dashboard
+      </NavLink>
       {user ? (
         <>
        <div className="flex justify-center"> <LogOutBtn></LogOutBtn></div>
