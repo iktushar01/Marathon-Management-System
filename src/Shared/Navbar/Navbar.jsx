@@ -1,14 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import RegisterButton from "../../Components/Buttons/RegisterButton";
 import Logo from "../../Components/Logo/Logo";
+import { AuthContext } from "../../Contexts/AuthContext";
 
 const Navbar = () => {
+  const { user , signOutUser } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+
+  const handleSignOut = () =>{
+    signOutUser()
+    .then(() =>{
+      console.log('signout user')
+    })
+    .catch(error =>{
+      console.log(error)
+    })
+  }
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -52,21 +64,30 @@ const Navbar = () => {
       >
         Marathons
       </NavLink>
-      <NavLink
-        to="/signin"
-        className={({ isActive }) =>
-          `${
-            isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"
-          } ${underlineHover}`
-        }
-      >
-        Sign In
-      </NavLink>
-      <NavLink to="/register">
-        <div className="mt-2 lg:mt-0">
-          <RegisterButton />
-        </div>
-      </NavLink>
+      {user ? (
+        <button onClick={handleSignOut} className="btn">SignOut</button>
+      ) : (
+        <>
+          {" "}
+          <NavLink
+            to="/signin"
+            className={({ isActive }) =>
+              `${
+                isActive
+                  ? "text-yellow-400 font-semibold"
+                  : "hover:text-yellow-500"
+              } ${underlineHover}`
+            }
+          >
+            Sign In
+          </NavLink>
+          <NavLink to="/register">
+            <div className="mt-2 lg:mt-0">
+              <RegisterButton />
+            </div>
+          </NavLink>
+        </>
+      )}
     </>
   );
 
