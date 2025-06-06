@@ -38,7 +38,11 @@ const AddMarathon = () => {
           alt="Marathon Event"
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
         />
-        <div className="relative z-10 text-white text-center px-6 py-8 rounded-lg mx-4">
+        {/* Overlay */}
+        <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-10"></div>
+
+        {/* Content */}
+        <div className="relative z-20 text-white text-center px-6 py-8 rounded-lg mx-4">
           <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
             Create Your <span className="text-yellow-400">Marathon Event</span>
           </h1>
@@ -50,7 +54,10 @@ const AddMarathon = () => {
 
       {/* Right Form Section */}
       <div className="w-full md:w-1/2 flex items-center justify-center py-10 bg-[url('https://i.postimg.cc/qvbjBWGb/adrien-olichon-il-VYjf0-J378-unsplash.jpg')] bg-cover bg-center min-h-screen">
-        <form onSubmit={handleAddMarathon} className="w-11/12 max-w-lg space-y-5 bg-white/90 p-8 rounded-lg shadow-lg">
+        <form
+          onSubmit={handleAddMarathon}
+          className="w-11/12 max-w-lg space-y-5 bg-white/90 p-8 rounded-lg shadow-lg"
+        >
           <h2 className="text-2xl font-semibold text-center text-gray-800">
             Add Marathon Details
           </h2>
@@ -124,7 +131,9 @@ const AddMarathon = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700 mb-1">Marathon Image URL</label>
+            <label className="block text-gray-700 mb-1">
+              Marathon Image URL
+            </label>
             <input
               name="image"
               type="text"
