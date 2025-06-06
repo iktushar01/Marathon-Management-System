@@ -6,9 +6,32 @@ const AddMarathon = () => {
   const [endRegDate, setEndRegDate] = useState(null);
   const [marathonStartDate, setMarathonStartDate] = useState(null);
 
+  const handleAddMarathon = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const title = form.title.value;
+    const location = form.location.value;
+    const distance = form.distance.value;
+    const description = form.description.value;
+    const image = form.image.value;
+
+    const MarathonData = {
+      title,
+      location,
+      distance,
+      description,
+      image,
+      startRegDate,
+      endRegDate,
+      marathonStartDate,
+    };
+
+    console.log(MarathonData);
+  };
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left Side with Background Image */}
+      {/* Left Image Section */}
       <div className="hidden md:flex w-1/2 items-center justify-center relative overflow-hidden">
         <img
           src="https://i.postimg.cc/sgpNVTNb/abdur-ahmanus-t-2-Ov-WCSd34-unsplash.jpg"
@@ -20,15 +43,14 @@ const AddMarathon = () => {
             Create Your <span className="text-yellow-400">Marathon Event</span>
           </h1>
           <p className="mt-4 text-sm lg:text-base">
-            Organize and launch marathons with ease. Set up event details,
-            registration dates, and distance categories to attract participants.
+            Organize and launch marathons with ease...
           </p>
         </div>
       </div>
 
-      {/* Form Side */}
+      {/* Right Form Section */}
       <div className="w-full md:w-1/2 flex items-center justify-center py-10 bg-[url('https://i.postimg.cc/qvbjBWGb/adrien-olichon-il-VYjf0-J378-unsplash.jpg')] bg-cover bg-center min-h-screen">
-        <form className="w-11/12 max-w-lg space-y-5 bg-white/90 p-8 rounded-lg shadow-lg">
+        <form onSubmit={handleAddMarathon} className="w-11/12 max-w-lg space-y-5 bg-white/90 p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold text-center text-gray-800">
             Add Marathon Details
           </h2>
@@ -37,6 +59,7 @@ const AddMarathon = () => {
             <label className="block text-gray-700 mb-1">Marathon Title</label>
             <input
               type="text"
+              name="title"
               placeholder="Marathon Title"
               className="w-full px-4 py-2 border-2 border-yellow-400 rounded focus:outline-none"
             />
@@ -68,6 +91,7 @@ const AddMarathon = () => {
             <label className="block text-gray-700 mb-1">Location</label>
             <input
               type="text"
+              name="location"
               placeholder="Location"
               className="w-full px-4 py-2 border-2 border-yellow-400 rounded focus:outline-none"
             />
@@ -76,6 +100,7 @@ const AddMarathon = () => {
           <div>
             <label className="block text-gray-700 mb-1">Running Distance</label>
             <select
+              name="distance"
               className="w-full px-4 py-2 border-2 border-yellow-400 rounded focus:outline-none"
               defaultValue=""
             >
@@ -91,6 +116,7 @@ const AddMarathon = () => {
           <div>
             <label className="block text-gray-700 mb-1">Description</label>
             <textarea
+              name="description"
               rows="4"
               placeholder="Description"
               className="w-full px-4 py-2 border-2 border-yellow-400 rounded focus:outline-none"
@@ -100,6 +126,7 @@ const AddMarathon = () => {
           <div>
             <label className="block text-gray-700 mb-1">Marathon Image URL</label>
             <input
+              name="image"
               type="text"
               placeholder="Marathon Image URL"
               className="w-full px-4 py-2 border-2 border-yellow-400 rounded focus:outline-none"
@@ -107,7 +134,7 @@ const AddMarathon = () => {
           </div>
 
           <button
-            type="button"
+            type="submit"
             className="w-full bg-yellow-400 hover:bg-yellow-300 text-black py-2 font-semibold rounded transition duration-300 btn"
           >
             Submit Marathon
