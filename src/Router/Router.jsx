@@ -23,6 +23,7 @@ const router = createBrowserRouter([
       {
         path: "marathons",
         element: <Marathons />,
+        loader: () => fetch("http://localhost:4000/marathons")
       },
       {
         path: "signin",

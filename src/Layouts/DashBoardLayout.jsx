@@ -12,7 +12,7 @@ const DashBoardLayout = () => {
 
       {/* Hero Section */}
       <div
-        className="relative h-96 flex items-center justify-center pt-14 bg-cover bg-center bg-no-repeat"
+        className="relative h-32 md:h-64 flex items-center justify-center pt-12 md:pt-16 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage:
             "url('https://i.postimg.cc/T2sbwf8W/pexels-dmitrii-eremin-67499966-15741250.jpg')",
