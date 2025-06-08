@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Datepicker from "../../Components/DatePicker/Datepicker";
+import Swal from "sweetalert2";
 
 const AddMarathon = () => {
   const [startRegDate, setStartRegDate] = useState(null);
   const [endRegDate, setEndRegDate] = useState(null);
   const [marathonStartDate, setMarathonStartDate] = useState(null);
 
-  const handleAddMarathon = (e) => {
+  const handleAddMarathon = async (e) => {
     e.preventDefault();
     const form = e.target;
     const title = form.title.value;
@@ -26,7 +27,41 @@ const AddMarathon = () => {
       marathonStartDate,
     };
 
-    console.log(MarathonData);
+    try {
+      const res = await fetch("http://localhost:4000/marathons", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(MarathonData),
+      });
+
+      const data = await res.json();
+
+      if (data.insertedId) {
+        Swal.fire({
+          title: "Success!",
+          text: "Marathon added successfully.",
+          icon: "success",
+        });
+        form.reset();
+        setStartRegDate(null);
+        setEndRegDate(null);
+        setMarathonStartDate(null);
+      } else {
+        Swal.fire({
+          title: "Insert Failed",
+          text: "No insertedId returned.",
+          icon: "warning",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Server error while posting data.",
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -38,10 +73,7 @@ const AddMarathon = () => {
           alt="Marathon Event"
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
         />
-        {/* Overlay */}
         <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-10"></div>
-
-        {/* Content */}
         <div className="relative z-20 text-white text-center px-6 py-8 rounded-lg mx-4">
           <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
             Create Your <span className="text-yellow-400">Marathon Event</span>
@@ -144,7 +176,7 @@ const AddMarathon = () => {
 
           <button
             type="submit"
-            className="w-full bg-yellow-400 hover:bg-yellow-300 text-black py-2 font-semibold rounded transition duration-300 btn"
+            className="w-full bg-yellow-400 hover:bg-yellow-300 text-black py-2 font-semibold rounded transition duration-300"
           >
             Submit Marathon
           </button>
