@@ -81,7 +81,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="flex flex-col items-center pt-8 mt-8 border-t border-gray-800 sm:flex-row sm:justify-between">
+        <div className="flex flex-col items-center pt-8 mt-8 border-t border-gray-800 sm:flex-row sm:justify-between mb-10">
           <p className="text-sm text-gray-500">
             © {currentYear} Marathon Management. All rights reserved.
           </p>
