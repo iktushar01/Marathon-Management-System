@@ -9,6 +9,7 @@ import DashBoardLayout from "../Layouts/DashBoardLayout";
 import MyMarathonList from "../Pages/MyMarathonList/MyMarathonList";
 import MyApplyList from "../Pages/MyApplyList/MyApplyList";
 import AddMarathon from "../Pages/AddMarathon/AddMarathon";
+import MarathonsDetails from "../Pages/Marathons/MarathonsDetails";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,11 @@ const router = createBrowserRouter([
         path: "marathons",
         element: <Marathons />,
         loader: () => fetch("http://localhost:4000/marathons")
+      },
+      {
+        path: "marathons/:id",
+        element: <MarathonsDetails/>,
+        loader: ({params}) => fetch(`http://localhost:4000/marathons/${params.id}`)
       },
       {
         path: "signin",
