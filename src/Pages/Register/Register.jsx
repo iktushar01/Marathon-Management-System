@@ -125,7 +125,7 @@ const Register = () => {
             { name: "email", placeholder: "Email Address", type: "email", delay: 0.65 },
             { name: "photoURL", placeholder: "Photo URL", type: "text", delay: 0.7 },
             { name: "password", placeholder: "Password", type: "password", delay: 0.75 }
-          ].map((field, index) => (
+          ].map((field) => (
             <motion.div
               key={field.name}
               initial={{ opacity: 0, y: 20 }}

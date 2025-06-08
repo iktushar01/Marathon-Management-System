@@ -6,7 +6,7 @@ import SmoothFollower from "../Shared/Cursor/SmoothFollower";
 
 const DashBoardLayout = () => {
   return (
-    <div>
+    <div className="bg-[url('https://i.postimg.cc/B6DNk4DX/klim-musalimov-r-DMacl1-FDjw-unsplash.jpg')] bg-cover bg-center">
       <SmoothFollower />
       <Navbar />
 
@@ -30,7 +30,7 @@ const DashBoardLayout = () => {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="grid grid-cols-3 bg-gray-900 ">
+      <div className="container mx-auto grid grid-cols-3 bg-gray-900 ">
         <NavLink
           to="/dashboard/add-marathon"
           className={({ isActive }) =>
@@ -75,7 +75,7 @@ const DashBoardLayout = () => {
       </div>
 
       {/* Dynamic Content */}
-      <div className="min-h-screen ">
+      <div className="min-h-screen container mx-auto">
         <Outlet />
       </div>
 
