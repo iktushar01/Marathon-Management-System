@@ -113,14 +113,14 @@ const SignIn = () => {
             <GoogleLogin></GoogleLogin>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="divider divider-warning"
-          >
-            Or
-          </motion.div>
+          <motion.div
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ delay: 0.5, duration: 0.5 }}
+                      className="divider divider-warning"
+                    >
+                      Or
+                    </motion.div>
 
           <motion.div
             initial={{ opacity: 0, x: -10 }}
