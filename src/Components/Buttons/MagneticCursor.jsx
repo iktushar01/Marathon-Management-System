@@ -38,10 +38,10 @@ const MagneticCursor = () => {
     };
   }, [x, y]);
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div className="relative w-full h-full flex items-center justify-center ">
       <motion.button
         ref={buttonRef}
-        className={`px-6 py-3 rounded-lg text-black font-semibold transition-transform ${isHovering ? 'bg-yellow-300' : 'bg-yellow-400'}`}
+        className={`px-6 py-3 rounded-lg text-black font-semibold cursor-pointer transition-transform ${isHovering ? 'bg-yellow-300' : 'bg-yellow-400'}`}
         style={{
           x: springX,
           y: springY,

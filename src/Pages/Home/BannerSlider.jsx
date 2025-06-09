@@ -2,7 +2,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
 import MagneticCursor from "../../Components/Buttons/MagneticCursor";
 
 const bannerData = [
@@ -30,14 +31,54 @@ const bannerData = [
   },
 ];
 
+const HighlightText = ({ children }) => {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    const sequence = async () => {
+      await controls.start({
+        scale: [1, 1.1, 1],
+        rotate: [0, 5, -5, 0],
+        transition: { duration: 0.8, ease: "easeInOut" }
+      });
+      await controls.start({
+        backgroundColor: "#facc15",
+        color: "#000",
+        transition: { duration: 0.3 }
+      });
+    };
+    sequence();
+  }, [controls]);
+
+  return (
+    <motion.span
+      className="inline-block px-2 rounded mx-1"
+      initial={{ backgroundColor: "#00000000", color: "#facc15" }}
+      animate={controls}
+      whileHover={{
+        scale: 1.05,
+        rotate: 2,
+        transition: { duration: 0.3 }
+      }}
+    >
+      {children}
+    </motion.span>
+  );
+};
+
 export default function BannerSlider() {
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen w-full relative">
       <Swiper
         modules={[Pagination, Autoplay]}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 4000 }}
+        pagination={{ clickable: true, dynamicBullets: true }}
+        autoplay={{ 
+          delay: 5000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
+        }}
         loop={true}
+        speed={1000}
         className="w-full h-screen grab-slider"
       >
         {bannerData.map(({ title, highlight, description, image }, index) => {
@@ -49,32 +90,40 @@ export default function BannerSlider() {
                 className="w-full h-screen bg-cover bg-center flex items-center justify-center relative"
                 style={{ backgroundImage: `url(${image})` }}
               >
-                <div className="absolute inset-0 bg-black/60"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
 
-                <div className="relative z-10 px-4 text-center max-w-2xl text-white">
+                <div className="relative z-10 px-4 text-center max-w-2xl mx-auto text-white">
                   <motion.h2
-                    className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg"
+                    className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 drop-shadow-lg leading-tight"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   >
                     {parts[0]}
-                    <span className="bg-yellow-400 text-black px-2 rounded mx-1">
-                      {highlight}
-                    </span>
+                    <HighlightText>{highlight}</HighlightText>
                     {parts[1]}
                   </motion.h2>
 
                   <motion.p
-                    className="text-lg sm:text-xl drop-shadow-md mb-6"
+                    className="text-lg sm:text-xl drop-shadow-md mb-8 max-w-lg mx-auto"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+                    transition={{ 
+                      duration: 0.8, 
+                      ease: [0.16, 1, 0.3, 1], 
+                      delay: 0.3 
+                    }}
                   >
                     {description}
                   </motion.p>
 
-                  <MagneticCursor></MagneticCursor>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <MagneticCursor />
+                  </motion.div>
                 </div>
               </div>
             </SwiperSlide>
@@ -83,13 +132,20 @@ export default function BannerSlider() {
       </Swiper>
 
       <style jsx global>{`
+        .swiper-pagination {
+          bottom: 30px !important;
+        }
         .swiper-pagination-bullet {
           background: #facc15 !important;
-          opacity: 0.7;
+          opacity: 0.5;
+          width: 10px;
+          height: 10px;
+          transition: all 0.3s ease;
         }
         .swiper-pagination-bullet-active {
-          background: #facc15 !important;
-          opacity: 1;
+          opacity: 1 !important;
+          width: 30px;
+          border-radius: 4px;
         }
         .grab-slider {
           cursor: grab;
