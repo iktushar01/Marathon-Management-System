@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect, useContext, useCallback } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import RegisterButton from "../../Components/Buttons/RegisterButton";
@@ -9,22 +9,17 @@ import LogOutBtn from "../../Components/Buttons/LogOutBtn";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  // const handleSignOut = () =>{
-  //   signOutUser()
-  //   .then(() =>{
-  //     console.log('signout user')
-  //   })
-  //   .catch(error =>{
-  //     console.log(error)
-  //   })
-  // }
+  const toggleMenu = useCallback(() => setIsOpen(prev => !prev), []);
+  
+  // Close mobile menu when clicking anywhere in the mobile menu
+  const closeMenu = useCallback(() => setIsOpen(false), []);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-
+  // Hide navbar on scroll down
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -36,70 +31,50 @@ const Navbar = () => {
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  const underlineHover =
-    "relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-yellow-500 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100";
+  const underlineHover = "relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-yellow-500 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100";
+
+  const navLinkClasses = (isActive) => 
+    `${isActive ? "text-yellow-400 font-semibold" : "text-white hover:text-yellow-500"} ${underlineHover} transition-colors duration-200 px-2 py-1 rounded-md`;
+
+  // Create nav links with click handlers
+  const createNavLink = (to, text, isButton = false) => {
+    if (isButton) {
+      return (
+        <NavLink to={to} onClick={closeMenu}>
+          <div className="mt-2 lg:mt-0">
+            <RegisterButton />
+          </div>
+        </NavLink>
+      );
+    }
+    return (
+      <NavLink 
+        to={to} 
+        className={({ isActive }) => navLinkClasses(isActive)}
+        onClick={closeMenu}
+      >
+        {text}
+      </NavLink>
+    );
+  };
 
   const navLinks = (
     <>
-      <NavLink
-        to="/"
-        className={({ isActive }) =>
-          `${
-            isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"
-          } ${underlineHover}`
-        }
-      >
-        Home
-      </NavLink>
-      <NavLink
-        to="/marathons"
-        className={({ isActive }) =>
-          `${
-            isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"
-          } ${underlineHover}`
-        }
-      >
-        Marathons
-      </NavLink>
-      <NavLink
-        to="/dashboard"
-        className={({ isActive }) =>
-          `${
-            isActive ? "text-yellow-400 font-semibold" : "hover:text-yellow-500"
-          } ${underlineHover}`
-        }
-      >
-        dashboard
-      </NavLink>
+      {createNavLink("/", "Home")}
+      {createNavLink("/marathons", "Marathons")}
+      {createNavLink("/dashboard", "Dashboard")}
       {user ? (
-        <>
-       <div className="flex justify-center"> <LogOutBtn></LogOutBtn></div>
-        </>
-       
+        <div className="flex justify-center">
+          <LogOutBtn />
+        </div>
       ) : (
         <>
-          {" "}
-          <NavLink
-            to="/signin"
-            className={({ isActive }) =>
-              `${
-                isActive
-                  ? "text-yellow-400 font-semibold"
-                  : "hover:text-yellow-500"
-              } ${underlineHover}`
-            }
-          >
-            Sign In
-          </NavLink>
-          <NavLink to="/register">
-            <div className="mt-2 lg:mt-0">
-              <RegisterButton />
-            </div>
-          </NavLink>
+          {createNavLink("/signin", "Sign In")}
+          {createNavLink("/register", "", true)}
         </>
       )}
     </>
@@ -109,34 +84,41 @@ const Navbar = () => {
     <motion.header
       initial={{ y: 0 }}
       animate={{ y: showNavbar ? 0 : -80 }}
-      transition={{ duration: 0.4, ease: "easeInOut", type: "tween" }}
-      className="fixed border-b border-yellow-400 bg-black w-full z-50 shadow"
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="fixed border-b border-yellow-400 bg-black/95 backdrop-blur-sm w-full z-50 shadow-lg"
     >
-      <div className="container mx-auto flex justify-between items-center px-4 py-0 md:py-3">
-        <Logo></Logo>
-        <div
-          className="lg:hidden text-3xl text-yellow-400 cursor-pointer"
+      <div className="container mx-auto flex justify-between items-center px-4 py-3">
+        <Logo />
+        
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex gap-8 items-center text-lg font-medium">
+          {navLinks}
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <button
+          aria-label="Toggle menu"
+          className="lg:hidden text-3xl text-yellow-400 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded p-1 transition-all"
           onClick={toggleMenu}
         >
           {isOpen ? <FiX /> : <FiMenu />}
-        </div>
-
-        <nav className="hidden lg:flex gap-6 items-center text-white font-semibold">
-          {navLinks}
-        </nav>
+        </button>
       </div>
 
+      {/* Mobile Navigation */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             key="mobileMenu"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: "easeInOut", type: "tween" }}
-            className="bg-black text-yellow-400 text-center p-5 flex flex-col gap-4 shadow-lg lg:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="bg-black/95 backdrop-blur-sm overflow-hidden lg:hidden"
           >
-            {navLinks}
+            <div className="flex flex-col gap-4 p-6 items-center text-lg font-medium">
+              {navLinks}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
