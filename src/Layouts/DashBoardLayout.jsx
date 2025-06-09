@@ -1,18 +1,19 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet } from "react-router-dom";
 import Navbar from "../Shared/Navbar/Navbar";
 import Footer from "../Shared/Footer/Footer";
 import SmoothFollower from "../Shared/Cursor/SmoothFollower";
+import { motion } from "framer-motion";
 
 const DashBoardLayout = () => {
   return (
-    <div className="bg-[url('https://i.postimg.cc/B6DNk4DX/klim-musalimov-r-DMacl1-FDjw-unsplash.jpg')] bg-cover bg-center">
+    <div className="min-h-screen bg-gray-900 bg-opacity-90 bg-[url('https://i.postimg.cc/B6DNk4DX/klim-musalimov-r-DMacl1-FDjw-unsplash.jpg')] bg-cover bg-center bg-fixed bg-blend-overlay">
       <SmoothFollower />
       <Navbar />
 
-      {/* Hero Section */}
+    {/* Hero Section */}
       <div
-        className="relative h-32 md:h-64 flex items-center justify-center pt-12 md:pt-16 bg-cover bg-center bg-no-repeat"
+        className="relative h-64 md:h-64 flex items-center justify-center pt-18 md:pt-16 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage:
             "url('https://i.postimg.cc/T2sbwf8W/pexels-dmitrii-eremin-67499966-15741250.jpg')",
@@ -30,54 +31,54 @@ const DashBoardLayout = () => {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="container mx-auto grid grid-cols-3 bg-gray-900 ">
-        <NavLink
-          to="/dashboard/add-marathon"
-          className={({ isActive }) =>
-            `text-center text-sm sm:text-base px-2 sm:px-4 py-2 sm:py-3 font-semibold transition duration-300
-      ${
-        isActive
-          ? "bg-yellow-400 text-black shadow-lg "
-          : "bg-gray-800 text-white hover:bg-yellow-500 hover:text-black"
-      }`
-          }
-        >
-          Add Marathon
-        </NavLink>
-
-        <NavLink
-          to="/dashboard/my-marathons"
-          className={({ isActive }) =>
-            `text-center text-sm sm:text-base px-2 sm:px-4 py-2 sm:py-3 font-semibold transition duration-300
-      ${
-        isActive
-          ? "bg-yellow-400 text-black shadow-lg "
-          : "bg-gray-800 text-white hover:bg-yellow-500 hover:text-black "
-      }`
-          }
-        >
-          My Marathon List
-        </NavLink>
-
-        <NavLink
-          to="/dashboard/my-applies"
-          className={({ isActive }) =>
-            `text-center text-sm sm:text-base px-2 sm:px-4 py-2 sm:py-3 font-semibold transition duration-300
-      ${
-        isActive
-          ? "bg-yellow-400 text-black shadow-lg "
-          : "bg-gray-800 text-white hover:bg-yellow-500 hover:text-black "
-      }`
-          }
-        >
-          My Apply List
-        </NavLink>
-      </div>
+      <motion.div 
+        className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6  mt-10 md:mt-16 rounded-3xl p-6 md:p-8 shadow-2xl border "
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.6 }}
+      >
+        {[
+          { to: "/dashboard/add-marathon", text: "Add Marathon" },
+          { to: "/dashboard/my-marathons", text: "My Marathon List" },
+          { to: "/dashboard/my-applies", text: "My Apply List" },
+        ].map((item, index) => (
+          <NavLink
+            key={index}
+            to={item.to}
+            className={({ isActive }) =>
+              `relative overflow-hidden text-center px-4 py-3 md:py-4 font-medium rounded-xl transition-all duration-300 transform hover:-translate-y-1
+              ${
+                isActive
+                  ? "bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/30"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white"
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <span className="relative z-10">{item.text}</span>
+                {isActive && (
+                  <motion.span
+                    className="absolute inset-0 bg-yellow-500 z-0"
+                    layoutId="navActiveBg"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+              </>
+            )}
+          </NavLink>
+        ))}
+      </motion.div>
 
       {/* Dynamic Content */}
-      <div className="min-h-screen container mx-auto">
+      <motion.div
+        className=" container mx-auto  py-10 md:py-16"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+      >
         <Outlet />
-      </div>
+      </motion.div>
 
       <Footer />
     </div>

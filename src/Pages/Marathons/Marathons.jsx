@@ -8,7 +8,7 @@ const Marathons = () => {
     <div className="min-h-screen bg-[url('https://i.postimg.cc/B6DNk4DX/klim-musalimov-r-DMacl1-FDjw-unsplash.jpg')] bg-cover bg-center">
       {/* Hero Section */}
       <div
-        className="relative h-32 md:h-64 flex items-center justify-center pt-12 md:pt-16 bg-cover bg-center bg-no-repeat"
+        className="relative h-64 md:h-64 flex items-center justify-center pt-18 md:pt-16 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage:
             "url('https://i.postimg.cc/T2sbwf8W/pexels-dmitrii-eremin-67499966-15741250.jpg')",
