@@ -3,6 +3,7 @@ import BannerSlider from "./BannerSlider";
 import MarathonsCardHome from "./MarathonCardHome";
 import { useLoaderData } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
+import UpcomingMarathon from "./UpcomingMarathon";
 
 const Home = () => {
   const allMarathons = useLoaderData();
@@ -28,7 +29,7 @@ const Home = () => {
         setDisplayedMarathons(getRandomMarathons());
         setIsAnimating(false);
       }, 1000); // Duration matches animation
-    }, 7000); // 10 seconds
+    }, 20000); // 10 seconds
 
     return () => clearInterval(interval);
   }, [allMarathons]);
@@ -105,6 +106,24 @@ const Home = () => {
             ))}
           </AnimatePresence>
         </motion.div>
+        <div>
+          <div className="text-center text-yellow-400 py-8">
+            <h1 className="text-4xl font-bold mb-2">Upcoming Marathon</h1>
+            <p className="text-lg max-w-xl mx-auto text-white">
+              Join our thrilling marathon event where endurance meets
+              excitement. Discover routes, register easily, and get ready to
+              run!
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-6">
+            {displayedMarathons.map((marathon) => (
+              <div key={marathon._id}>
+                <UpcomingMarathon  marathon ={marathon} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
