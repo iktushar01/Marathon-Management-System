@@ -11,6 +11,7 @@ import MyApplyList from "../Pages/MyApplyList/MyApplyList";
 import AddMarathon from "../Pages/AddMarathon/AddMarathon";
 import MarathonsDetails from "../Pages/Marathons/MarathonsDetails";
 import PrivateRoutes from "../Routes/PrivateRoutes";
+import ProfileInfo from "../Shared/Navbar/ProfileInfo";
 
 const router = createBrowserRouter([
   {
@@ -18,16 +19,41 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     errorElement: <Error />,
     children: [
-      { index: true, element: <Home />, loader: () => fetch("http://localhost:4000/marathons") },
-      { path: "marathons", element: <Marathons />, loader: () => fetch("http://localhost:4000/marathons") },
-      { path: "marathons/:id", element: <PrivateRoutes><MarathonsDetails /></PrivateRoutes>, loader: ({ params }) => fetch(`http://localhost:4000/marathons/${params.id}`) },
+      {
+        index: true,
+        element: <Home />,
+        loader: () => fetch("http://localhost:4000/marathons"),
+      },
+      {
+        path:"/profileinfo",
+        element: <ProfileInfo />
+      },
+      {
+        path: "marathons",
+        element: <Marathons />,
+        loader: () => fetch("http://localhost:4000/marathons"),
+      },
+      {
+        path: "marathons/:id",
+        element: (
+          <PrivateRoutes>
+            <MarathonsDetails />
+          </PrivateRoutes>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:4000/marathons/${params.id}`),
+      },
       { path: "signin", element: <SignIn /> },
       { path: "register", element: <Register /> },
     ],
   },
   {
     path: "/dashboard",
-    element: <PrivateRoutes><DashBoardLayout /></PrivateRoutes>,
+    element: (
+      <PrivateRoutes>
+        <DashBoardLayout />
+      </PrivateRoutes>
+    ),
     children: [
       { index: true, element: <AddMarathon /> },
       { path: "add-marathon", element: <AddMarathon /> },

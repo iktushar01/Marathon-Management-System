@@ -6,6 +6,7 @@ import RegisterButton from "../../Components/Buttons/RegisterButton";
 import Logo from "../../Components/Logo/Logo";
 import { AuthContext } from "../../Contexts/AuthContext";
 import LogOutBtn from "../../Components/Buttons/LogOutBtn";
+import UserAvatar from "./UserAvatar";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
@@ -15,8 +16,6 @@ const Navbar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMenu = useCallback(() => setIsOpen(prev => !prev), []);
-  
-  // Close mobile menu when clicking anywhere in the mobile menu
   const closeMenu = useCallback(() => setIsOpen(false), []);
 
   // Hide navbar on scroll down
@@ -40,7 +39,6 @@ const Navbar = () => {
   const navLinkClasses = (isActive) => 
     `${isActive ? "text-yellow-400 font-semibold" : "text-white hover:text-yellow-500"} ${underlineHover} transition-colors duration-200 px-2 py-1 rounded-md`;
 
-  // Create nav links with click handlers
   const createNavLink = (to, text, isButton = false) => {
     if (isButton) {
       return (
@@ -66,14 +64,17 @@ const Navbar = () => {
     <>
       {createNavLink("/", "Home")}
       {createNavLink("/marathons", "Marathons")}
-      {createNavLink("/dashboard", "Dashboard")}
       {user ? (
-        <div className="flex justify-center">
-          <LogOutBtn />
-        </div>
+        <>
+          {createNavLink("/dashboard", "Dashboard")}
+          <div className="flex items-center gap-4">
+            <UserAvatar />
+            <LogOutBtn />
+          </div>
+        </>
       ) : (
         <>
-          {createNavLink("/signin", "Sign In")}
+          {createNavLink("/signin", "Login")}
           {createNavLink("/register", "", true)}
         </>
       )}
