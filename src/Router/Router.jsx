@@ -10,6 +10,7 @@ import MyMarathonList from "../Pages/MyMarathonList/MyMarathonList";
 import MyApplyList from "../Pages/MyApplyList/MyApplyList";
 import AddMarathon from "../Pages/AddMarathon/AddMarathon";
 import MarathonsDetails from "../Pages/Marathons/MarathonsDetails";
+import PrivateRoutes from "../Routes/PrivateRoutes";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: "marathons/:id",
-        element: <MarathonsDetails/>,
+        element: <PrivateRoutes><MarathonsDetails/></PrivateRoutes>,
         loader: ({params}) => fetch(`http://localhost:4000/marathons/${params.id}`)
       },
       {
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashBoardLayout />,
+    element: <PrivateRoutes><DashBoardLayout /></PrivateRoutes>,
     children: [
       {
       index: true,
@@ -52,15 +53,15 @@ const router = createBrowserRouter([
     },
       {
         path: "add-marathon",
-        element: <AddMarathon></AddMarathon>,
+        element: <PrivateRoutes><AddMarathon></AddMarathon></PrivateRoutes>,
       },
       {
         path: "my-marathons",
-        element: <MyMarathonList />,
+        element:<PrivateRoutes><MyMarathonList /></PrivateRoutes>,
       },
       {
         path: "my-applies",
-        element: <MyApplyList />,
+        element: <PrivateRoutes><MyApplyList /></PrivateRoutes>,
       },
     ],
   },
