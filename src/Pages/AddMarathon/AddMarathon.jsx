@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Datepicker from "../../Components/DatePicker/Datepicker";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
-import { FiUpload, FiCalendar, FiMapPin, FiAward, FiAlignLeft, FiImage } from "react-icons/fi";
+import {
+  FiUpload,
+  FiCalendar,
+  FiMapPin,
+  FiAward,
+  FiAlignLeft,
+  FiImage,
+} from "react-icons/fi";
+import { AuthContext } from "../../Contexts/AuthContext";
 
 const AddMarathon = () => {
+  const { user } = useContext(AuthContext);
   const [startRegDate, setStartRegDate] = useState(null);
   const [endRegDate, setEndRegDate] = useState(null);
   const [marathonStartDate, setMarathonStartDate] = useState(null);
@@ -13,25 +22,27 @@ const AddMarathon = () => {
 
   const validateForm = (formData) => {
     const newErrors = {};
-    
+
     if (!formData.title) newErrors.title = "Title is required";
     if (!formData.location) newErrors.location = "Location is required";
     if (!formData.distance) newErrors.distance = "Distance is required";
-    if (!formData.description) newErrors.description = "Description is required";
+    if (!formData.description)
+      newErrors.description = "Description is required";
     if (!formData.image) newErrors.image = "Image URL is required";
     if (!startRegDate) newErrors.startRegDate = "Start date is required";
     if (!endRegDate) newErrors.endRegDate = "End date is required";
-    if (!marathonStartDate) newErrors.marathonStartDate = "Marathon date is required";
-    
+    if (!marathonStartDate)
+      newErrors.marathonStartDate = "Marathon date is required";
+
     // Validate date logic
     if (startRegDate && endRegDate && startRegDate > endRegDate) {
       newErrors.endRegDate = "End date must be after start date";
     }
-    
+
     if (marathonStartDate && endRegDate && marathonStartDate < endRegDate) {
       newErrors.marathonStartDate = "Marathon must be after registration ends";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -56,6 +67,7 @@ const AddMarathon = () => {
       startRegDate,
       endRegDate,
       marathonStartDate,
+      userEmail: user?.email,
     };
 
     try {
@@ -135,7 +147,8 @@ const AddMarathon = () => {
             Create Your Marathon Event
           </h1>
           <p className="text-white max-w-2xl mx-auto">
-            Fill out the details below to organize and launch your marathon event
+            Fill out the details below to organize and launch your marathon
+            event
           </p>
         </motion.div>
 
@@ -193,9 +206,7 @@ const AddMarathon = () => {
                       <FiImage className="text-amber-600" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-800">
-                        Event Image
-                      </h3>
+                      <h3 className="font-medium text-gray-800">Event Image</h3>
                       <p className="text-sm text-gray-600">
                         Use high-quality images that represent your event
                       </p>
@@ -258,7 +269,9 @@ const AddMarathon = () => {
                       value={startRegDate}
                       onChange={setStartRegDate}
                       placeholder="Select start date"
-                      className={`w-full ${errors.startRegDate ? "border-red-500" : ""}`}
+                      className={`w-full ${
+                        errors.startRegDate ? "border-red-500" : ""
+                      }`}
                     />
                     {errors.startRegDate && (
                       <p className="mt-1 text-sm text-red-600">
@@ -276,7 +289,9 @@ const AddMarathon = () => {
                       value={endRegDate}
                       onChange={setEndRegDate}
                       placeholder="Select end date"
-                      className={`w-full ${errors.endRegDate ? "border-red-500" : ""}`}
+                      className={`w-full ${
+                        errors.endRegDate ? "border-red-500" : ""
+                      }`}
                     />
                     {errors.endRegDate && (
                       <p className="mt-1 text-sm text-red-600">
@@ -296,7 +311,9 @@ const AddMarathon = () => {
                     value={marathonStartDate}
                     onChange={setMarathonStartDate}
                     placeholder="Select marathon date"
-                    className={`w-full ${errors.marathonStartDate ? "border-red-500" : ""}`}
+                    className={`w-full ${
+                      errors.marathonStartDate ? "border-red-500" : ""
+                    }`}
                   />
                   {errors.marathonStartDate && (
                     <p className="mt-1 text-sm text-red-600">
@@ -350,7 +367,9 @@ const AddMarathon = () => {
                     <option value="42k">Full Marathon (42K)</option>
                   </select>
                   {errors.distance && (
-                    <p className="mt-1 text-sm text-red-600">{errors.distance}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.distance}
+                    </p>
                   )}
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                     <svg

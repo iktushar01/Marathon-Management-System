@@ -1,10 +1,52 @@
 import React from 'react';
+import { useLoaderData } from 'react-router-dom';
 
 const MyMarathonList = () => {
+    const marathons = useLoaderData();
+
     return (
-        <div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate nemo obcaecati optio ratione eius aperiam sapiente. Quae, numquam sit! Perspiciatis tenetur alias, incidunt itaque aspernatur odit, et fugiat, iusto iste soluta minima in quis error. Deleniti corrupti hic molestiae quia, itaque quis dolor in maiores, praesentium mollitia aperiam tempore obcaecati harum quaerat iure ipsam nemo repudiandae delectus cumque earum eveniet veniam pariatur nisi? Vel quam impedit odit, magnam eveniet dolorem nisi doloribus saepe fugit ullam facere dolor quas necessitatibus doloremque ad. Voluptas minima dolorem corrupti unde fugiat, accusamus vitae, consequuntur autem dolor illo, velit tempore sint deleniti debitis nesciunt. Deserunt.</p>
-            <h1>MyMarathonList </h1>
+        <div className="container mx-auto px-4 py-8">
+            <h1 className="text-2xl font-bold mb-6">My Created Marathons</h1>
+            
+            <div className="overflow-x-auto">
+                <table className="min-w-full bg-white rounded-lg overflow-hidden">
+                    <thead className="bg-gray-800 text-white">
+                        <tr>
+                            <th className="px-4 py-3 text-left">Title</th>
+                            <th className="px-4 py-3 text-left">Date</th>
+                            <th className="px-4 py-3 text-left">Location</th>
+                            <th className="px-4 py-3 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody className="text-gray-700">
+                        {marathons.map((marathon) => (
+                            <tr key={marathon._id} className="border-b border-gray-200 hover:bg-gray-50">
+                                <td className="px-4 py-3">
+                                    <div className="font-medium">{marathon.title}</div>
+                                </td>
+                                <td className="px-4 py-3">
+                                    {new Date(marathon.marathonStartDate).toLocaleDateString()}
+                                </td>
+                                <td className="px-4 py-3">{marathon.location}</td>
+                                <td className="px-4 py-3">
+                                    <div className="flex space-x-2">
+                                        <button 
+                                            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+                                        >
+                                            Update
+                                        </button>
+                                        <button 
+                                            className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
