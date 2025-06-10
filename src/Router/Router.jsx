@@ -18,51 +18,21 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     errorElement: <Error />,
     children: [
-      {
-        index: true,
-        element: <Home />,
-        loader: () => fetch("http://localhost:4000/marathons")
-      },
-      {
-        path: "marathons",
-        element: <Marathons />,
-        loader: () => fetch("http://localhost:4000/marathons")
-      },
-      {
-        path: "marathons/:id",
-        element: <PrivateRoutes><MarathonsDetails/></PrivateRoutes>,
-        loader: ({params}) => fetch(`http://localhost:4000/marathons/${params.id}`)
-      },
-      {
-        path: "signin",
-        element: <SignIn />,
-      },
-      {
-        path: "register",
-        element: <Register />,
-      },
+      { index: true, element: <Home />, loader: () => fetch("http://localhost:4000/marathons") },
+      { path: "marathons", element: <Marathons />, loader: () => fetch("http://localhost:4000/marathons") },
+      { path: "marathons/:id", element: <PrivateRoutes><MarathonsDetails /></PrivateRoutes>, loader: ({ params }) => fetch(`http://localhost:4000/marathons/${params.id}`) },
+      { path: "signin", element: <SignIn /> },
+      { path: "register", element: <Register /> },
     ],
   },
   {
     path: "/dashboard",
     element: <PrivateRoutes><DashBoardLayout /></PrivateRoutes>,
     children: [
-      {
-      index: true,
-      element: <AddMarathon />
-    },
-      {
-        path: "add-marathon",
-        element: <PrivateRoutes><AddMarathon></AddMarathon></PrivateRoutes>,
-      },
-      {
-        path: "my-marathons",
-        element:<PrivateRoutes><MyMarathonList /></PrivateRoutes>,
-      },
-      {
-        path: "my-applies",
-        element: <PrivateRoutes><MyApplyList /></PrivateRoutes>,
-      },
+      { index: true, element: <AddMarathon /> },
+      { path: "add-marathon", element: <AddMarathon /> },
+      { path: "my-marathons", element: <MyMarathonList /> },
+      { path: "my-applies", element: <MyApplyList /> },
     ],
   },
 ]);

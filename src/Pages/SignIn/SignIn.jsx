@@ -1,26 +1,43 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContext";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 import { motion } from "framer-motion";
 
 const SignIn = () => {
   const { signInUser } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+  console.log("Redirect from:", from);
+
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  console.log("location in sign in page", location);
 
   const handleSignIn = (e) => {
     e.preventDefault();
+    setError(null);
+    setLoading(true);
+
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
+
     const userData = { email, password };
     console.log(userData);
 
     signInUser(email, password)
       .then((result) => {
-        console.log(result.user);
+        console.log("Login successful", result.user);
+        setLoading(false);
+        navigate(from, { replace: true });
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Login error:", error);
+        setError(error.message || "Login failed");
+        setLoading(false);
       });
   };
 
@@ -110,17 +127,17 @@ const SignIn = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <GoogleLogin></GoogleLogin>
+            <GoogleLogin />
           </motion.div>
 
           <motion.div
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ delay: 0.5, duration: 0.5 }}
-                      className="divider divider-warning"
-                    >
-                      Or
-                    </motion.div>
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="divider divider-warning"
+          >
+            Or
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, x: -10 }}
@@ -133,6 +150,7 @@ const SignIn = () => {
               placeholder="Email Address"
               className="w-full px-4 py-2 border-2 border-yellow-400 rounded focus:outline-none"
               required
+              aria-label="Email Address"
             />
           </motion.div>
 
@@ -147,8 +165,21 @@ const SignIn = () => {
               placeholder="Password"
               className="w-full px-4 py-2 border-2 border-yellow-400 rounded focus:outline-none"
               required
+              aria-label="Password"
             />
           </motion.div>
+
+          {error && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.9 }}
+              className="text-red-600 text-sm"
+              role="alert"
+            >
+              {error}
+            </motion.p>
+          )}
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -157,11 +188,14 @@ const SignIn = () => {
           >
             <button
               type="submit"
-              className="w-full bg-yellow-400 hover:bg-yellow-300 text-black py-2 font-semibold rounded transition duration-300 btn"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className={`w-full bg-yellow-400 hover:bg-yellow-300 text-black py-2 font-semibold rounded transition duration-300 btn ${
+                loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
+              disabled={loading}
+              whileHover={!loading ? { scale: 1.02 } : {}}
+              whileTap={!loading ? { scale: 0.98 } : {}}
             >
-              Log In
+              {loading ? "Logging in..." : "Log In"}
             </button>
           </motion.div>
 
