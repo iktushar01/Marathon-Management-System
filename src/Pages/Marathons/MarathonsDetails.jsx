@@ -1,36 +1,62 @@
 import React from "react";
 import { useLoaderData } from "react-router-dom";
+import { FaMapMarkerAlt, FaRunning, FaCalendarAlt, FaRegCalendarCheck, FaRegCalendarTimes } from "react-icons/fa";
+import { HiUserGroup } from "react-icons/hi";
 
 const MarathonsDetails = () => {
   const marathon = useLoaderData();
   const registrationCount = marathon.registrationCount || 0;
 
+  // Date handling with proper timezone consideration
+  const now = new Date();
+  const startRegDate = new Date(marathon.startRegDate);
+  const endRegDate = new Date(marathon.endRegDate);
+  const marathonDate = new Date(marathon.marathonStartDate);
+
+  // Registration status logic
+  const isRegistrationNotStarted = now < startRegDate;
+  const isRegistrationClosed = now > endRegDate;
+  const isRegistrationOpen = !isRegistrationNotStarted && !isRegistrationClosed;
+
+  const handleRegisterClick = () => {
+    window.location.href = `/marathons/${marathon._id}/register`;
+  };
+
+  // Format dates for display
+  const formatDate = (date) => {
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[url('https://i.postimg.cc/B6DNk4DX/klim-musalimov-r-DMacl1-FDjw-unsplash.jpg')] bg-cover bg-center">
-        {/* Hero Section */}
+      {/* Hero Section */}
       <div
-        className="relative h-64 md:h-64 flex items-center justify-center pt-18 md:pt-16 bg-cover bg-center bg-no-repeat"
+        className="relative h-64 md:h-80 flex items-center justify-center bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage:
-            "url('https://i.postimg.cc/T2sbwf8W/pexels-dmitrii-eremin-67499966-15741250.jpg')",
+          backgroundImage: "url('https://i.postimg.cc/T2sbwf8W/pexels-dmitrii-eremin-67499966-15741250.jpg')",
         }}
       >
-        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/60"></div>
-
-        {/* Content */}
-        <div className="relative px-6 py-2 rounded">
-          <h1 className="text-yellow-300 text-4xl font-bold tracking-wide">
-            Marathons Details
+        <div className="relative px-6 py-2 text-center">
+          <h1 className="text-yellow-300 text-4xl md:text-5xl font-bold tracking-wide">
+            {marathon.title}
           </h1>
+          <p className="text-white mt-2 text-lg">
+            <FaCalendarAlt className="inline mr-2" />
+            {formatDate(marathonDate)}
+          </p>
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="container mx-auto px-4 py-8 md:py-12 ">
+      <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Marathon Image */}
-          <div className="lg:w-1/2">
+          {/* Marathon Image and Stats */}
+          <div className="lg:w-1/2 space-y-6">
             <img
               src={marathon.image}
               alt={marathon.title}
@@ -38,63 +64,44 @@ const MarathonsDetails = () => {
             />
             
             {/* Registration Count */}
-            <div className="mt-6 bg-blue-50 p-6 rounded-lg">
-              <h4 className="font-semibold text-blue-800 mb-2 text-lg">
-                Total Registrations
-              </h4>
-              <p className="text-blue-600 text-3xl font-bold">
-                {registrationCount}
-              </p>
+            <div className="bg-blue-50 p-6 rounded-lg">
+              <div className="flex items-center">
+                <HiUserGroup className="text-blue-800 text-2xl mr-3" />
+                <div>
+                  <h4 className="font-semibold text-blue-800 mb-1">
+                    Total Registrations
+                  </h4>
+                  <p className="text-blue-600 text-3xl font-bold">
+                    {registrationCount}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Info Card */}
+            <div className="bg-white p-6 rounded-lg shadow">
+              <h3 className="text-xl font-semibold mb-4 flex items-center">
+                <FaRunning className="text-yellow-500 mr-2" />
+                Quick Info
+              </h3>
+              <ul className="space-y-3">
+                <li className="flex items-center">
+                  <FaMapMarkerAlt className="text-gray-500 mr-3" />
+                  <span>{marathon.location}</span>
+                </li>
+                <li className="flex items-center">
+                  <FaRunning className="text-gray-500 mr-3" />
+                  <span>{marathon.distance}</span>
+                </li>
+              </ul>
             </div>
           </div>
 
           {/* Marathon Details */}
           <div className="lg:w-1/2 p-6 bg-white rounded-lg shadow-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">
               Event Details
             </h2>
-
-            {/* Location */}
-            <div className="flex items-center text-gray-600 mb-4">
-              <svg
-                className="w-5 h-5 mr-2 text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              <span className="text-lg">{marathon.location}</span>
-            </div>
-
-            {/* Distance */}
-            <div className="flex items-center text-gray-600 mb-6">
-              <svg
-                className="w-5 h-5 mr-2 text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
-              <span className="text-lg">{marathon.distance}</span>
-            </div>
 
             {/* Description */}
             <div className="mb-8">
@@ -109,29 +116,70 @@ const MarathonsDetails = () => {
             {/* Dates */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h4 className="font-semibold text-gray-800 mb-2">
+                <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                  <FaRegCalendarCheck className="mr-2" />
                   Registration Period
                 </h4>
-                <p className="text-gray-600">
-                  {new Date(marathon.startRegDate).toLocaleDateString()} -{" "}
-                  {new Date(marathon.endRegDate).toLocaleDateString()}
+                <p className="text-gray-600 mb-2">
+                  {formatDate(startRegDate)} - {formatDate(endRegDate)}
                 </p>
+                <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                  isRegistrationOpen 
+                    ? 'bg-green-100 text-green-800'
+                    : isRegistrationNotStarted
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'bg-red-100 text-red-800'
+                }`}>
+                  {isRegistrationOpen 
+                    ? 'Open for Registration'
+                    : isRegistrationNotStarted
+                      ? 'Coming Soon'
+                      : 'Registration Closed'}
+                </div>
               </div>
 
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h4 className="font-semibold text-gray-800 mb-2">
+                <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                  <FaCalendarAlt className="mr-2" />
                   Marathon Date
                 </h4>
                 <p className="text-gray-600">
-                  {new Date(marathon.marathonStartDate).toLocaleDateString()}
+                  {formatDate(marathonDate)}
                 </p>
               </div>
             </div>
 
-            {/* Action Button - You might want to add this */}
-            <button className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-4 rounded-lg transition duration-200">
-              Register Now
-            </button>
+            {/* Registration Button */}
+            {isRegistrationOpen ? (
+              <button
+                onClick={handleRegisterClick}
+                className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center"
+              >
+                <FaRegCalendarCheck className="mr-2" />
+                Register Now
+              </button>
+            ) : (
+              <button
+                disabled
+                className={`w-full font-bold py-3 px-4 rounded-lg flex items-center justify-center ${
+                  isRegistrationNotStarted
+                    ? 'bg-blue-100 text-blue-800 cursor-not-allowed'
+                    : 'bg-gray-200 text-gray-600 cursor-not-allowed'
+                }`}
+              >
+                {isRegistrationNotStarted ? (
+                  <>
+                    <FaRegCalendarTimes className="mr-2" />
+                    Registration Opens Soon
+                  </>
+                ) : (
+                  <>
+                    <FaRegCalendarTimes className="mr-2" />
+                    Registration Closed
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>
