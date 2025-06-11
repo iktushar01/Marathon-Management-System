@@ -1,8 +1,59 @@
-import React from "react";
-import { useLoaderData } from "react-router";
+import React, { useContext } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../Contexts/AuthContext";
 
 const MarathonRegister = () => {
+  const { user } = useContext(AuthContext);
   const marathon = useLoaderData();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const registrationData = {
+      userEmail: user.email,
+      marathonId: marathon._id,
+      marathonTitle: marathon.title,
+      marathonStartDate: marathon.marathonStartDate,
+      firstName: form.firstName.value,
+      lastName: form.lastName.value,
+      contactNumber: form.contactNumber.value,
+      additionalInfo: form.additionalInfo.value,
+    };
+
+    try {
+      const res = await fetch("http://localhost:4000/registrations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(registrationData),
+      });
+
+      const data = await res.json();
+
+      if (data.success || data.acknowledged) {
+        Swal.fire({
+          title: "Success!",
+          text: "You have successfully registered for the marathon.",
+          icon: "success",
+          confirmButtonText: "Go to My Apply",
+        }).then(() => {
+          navigate("/dashboard/my-applies");
+        });
+      } else {
+        throw new Error("Registration failed");
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "Try Again",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-yellow-300">
@@ -49,7 +100,7 @@ const MarathonRegister = () => {
               Registration Form
             </h2>
 
-            <form className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Marathon Info (Readonly) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
@@ -86,7 +137,7 @@ const MarathonRegister = () => {
                 </label>
                 <input
                   type="email"
-                  value={marathon.userEmail}
+                  value={user?.email || ""}
                   readOnly
                   className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-yellow-100 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                 />
@@ -99,6 +150,7 @@ const MarathonRegister = () => {
                     First Name *
                   </label>
                   <input
+                  name="firstName"
                     type="text"
                     required
                     className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -110,6 +162,7 @@ const MarathonRegister = () => {
                     Last Name *
                   </label>
                   <input
+                  name="lastName"
                     type="text"
                     required
                     className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -123,6 +176,7 @@ const MarathonRegister = () => {
                   Contact Number *
                 </label>
                 <input
+                name="contactNumber"
                   type="tel"
                   required
                   className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -135,6 +189,7 @@ const MarathonRegister = () => {
                   Additional Information
                 </label>
                 <textarea
+                name="additionalInfo"
                   rows={3}
                   className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
                 />
