@@ -69,7 +69,7 @@ const router = createBrowserRouter([
       { index: true, element: <AddMarathon /> },
       { path: "add-marathon", element: <AddMarathon /> },
       { path: "my-marathons", element: <MyMarathonList /> , loader: () => fetch("http://localhost:4000/marathons"), },
-      { path: "my-applies", element: <MyApplyList /> },
+      { path: "my-applies", element: <MyApplyList />, loader: () => fetch("http://localhost:4000/registrations"), },
     ],
   },
 ]);

@@ -14,12 +14,12 @@ const MyMarathonList = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-    <h1 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2 text-center">
-                    My Created Marathons
-                </h1>
-                <p className="text-white text-center mb-8">
-                    View and manage all the marathon events you've created
-                </p>
+      <h1 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2 text-center">
+        My Created Marathons
+      </h1>
+      <p className="text-white text-center mb-8">
+        View and manage all the marathon events you've created
+      </p>
 
       {myMarathons.length === 0 ? (
         <p className="text-gray-600">You haven't created any marathons yet.</p>
