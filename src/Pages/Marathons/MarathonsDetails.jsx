@@ -7,7 +7,7 @@ const MarathonsDetails = () => {
   const navigate = useNavigate();
 
   const marathon = useLoaderData();
-  const registrationCount = marathon.registrationCount || 0;
+  const totalRegistrations = marathon.totalRegistrations || 0;
 
   // Date handling with proper timezone consideration
   const now = new Date();
@@ -74,7 +74,7 @@ const handleRegisterClick = () => {
                     Total Registrations
                   </h4>
                   <p className="text-blue-600 text-3xl font-bold">
-                    {registrationCount}
+                    {totalRegistrations}
                   </p>
                 </div>
               </div>
