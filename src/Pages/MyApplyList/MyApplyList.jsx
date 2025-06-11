@@ -11,28 +11,75 @@ const MyApplyList = () => {
     (registration) => registration.userEmail === user.email
   );
 
-  // State for modals
+  // State for update modal and form
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRegistration, setSelectedRegistration] = useState(null);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    contactNumber: '',
+    additionalInfo: ''
+  });
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updateError, setUpdateError] = useState(null);
 
   // Handle update button click
   const handleUpdateClick = (registration) => {
     setSelectedRegistration(registration);
+    setFormData({
+      firstName: registration.firstName,
+      lastName: registration.lastName,
+      contactNumber: registration.contactNumber,
+      additionalInfo: registration.additionalInfo || ''
+    });
     setShowUpdateModal(true);
+    setUpdateError(null);
   };
 
-  // Handle delete button click
-  const handleDeleteClick = (registration) => {
-    setSelectedRegistration(registration);
-    setShowDeleteModal(true);
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  // Close modals
-  const handleCloseModals = () => {
+  // Handle update submission
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    setIsUpdating(true);
+    setUpdateError(null);
+
+    try {
+      const response = await fetch(`http://localhost:4000/registrations/${selectedRegistration._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update registration');
+      }
+
+      // Close modal on success
+      setShowUpdateModal(false);
+      window.location.reload(); // Refresh to show updated data
+    } catch (error) {
+      console.error('Update error:', error);
+      setUpdateError(error.message || 'Error updating registration');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  // Close modal
+  const handleCloseModal = () => {
     setShowUpdateModal(false);
-    setShowDeleteModal(false);
     setSelectedRegistration(null);
+    setUpdateError(null);
   };
 
   return (
@@ -77,12 +124,14 @@ const MyApplyList = () => {
                     <button
                       onClick={() => handleUpdateClick(registration)}
                       className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded mr-2 transition"
+                      disabled={isUpdating}
                     >
                       Update
                     </button>
                     <button
-                      onClick={() => handleDeleteClick(registration)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition opacity-50 cursor-not-allowed"
+                      disabled
+                      title="Delete functionality coming soon"
                     >
                       Delete
                     </button>
@@ -95,18 +144,27 @@ const MyApplyList = () => {
       )}
 
       {/* Update Modal */}
-      {showUpdateModal && selectedRegistration && (
+      {showUpdateModal && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <h2 className="text-xl font-bold mb-4">Update Registration</h2>
+            
+            {updateError && (
+              <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
+                {updateError}
+              </div>
+            )}
 
-            <form>
+            <form onSubmit={handleUpdateSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-700 mb-2">First Name</label>
                 <input
                   type="text"
-                  defaultValue={selectedRegistration.firstName}
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
                   className="w-full px-3 py-2 border rounded"
+                  required
                 />
               </div>
 
@@ -114,28 +172,34 @@ const MyApplyList = () => {
                 <label className="block text-gray-700 mb-2">Last Name</label>
                 <input
                   type="text"
-                  defaultValue={selectedRegistration.lastName}
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
                   className="w-full px-3 py-2 border rounded"
+                  required
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-700 mb-2">
-                  Contact Number
-                </label>
+                <label className="block text-gray-700 mb-2">Contact Number</label>
                 <input
-                  type="text"
-                  defaultValue={selectedRegistration.contactNumber}
+                  type="tel"
+                  name="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleInputChange}
                   className="w-full px-3 py-2 border rounded"
+                  required
+                  pattern="[0-9]{10,15}"
+                  title="Please enter 10-15 digit phone number"
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-700 mb-2">
-                  Additional Info
-                </label>
+                <label className="block text-gray-700 mb-2">Additional Info</label>
                 <textarea
-                  defaultValue={selectedRegistration.additionalInfo}
+                  name="additionalInfo"
+                  value={formData.additionalInfo}
+                  onChange={handleInputChange}
                   className="w-full px-3 py-2 border rounded"
                   rows="3"
                 />
@@ -144,44 +208,29 @@ const MyApplyList = () => {
               <div className="flex justify-end space-x-3">
                 <button
                   type="button"
-                  onClick={handleCloseModals}
+                  onClick={handleCloseModal}
                   className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
+                  disabled={isUpdating}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center justify-center"
+                  disabled={isUpdating}
                 >
-                  Save Changes
+                  {isUpdating ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Updating...
+                    </>
+                  ) : 'Save Changes'}
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
-
-      {/* Delete Confirmation Modal */}
-      {showDeleteModal && selectedRegistration && (
-        <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
-            <p className="mb-6">
-              Are you sure you want to delete your registration for "
-              {selectedRegistration.marathonTitle}"?
-            </p>
-
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={handleCloseModals}
-                className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
-              >
-                Cancel
-              </button>
-              <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                Delete Registration
-              </button>
-            </div>
           </div>
         </div>
       )}
