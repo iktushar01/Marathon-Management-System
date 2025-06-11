@@ -1,9 +1,11 @@
 import React from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { FaMapMarkerAlt, FaRunning, FaCalendarAlt, FaRegCalendarCheck, FaRegCalendarTimes } from "react-icons/fa";
 import { HiUserGroup } from "react-icons/hi";
 
 const MarathonsDetails = () => {
+  const navigate = useNavigate();
+
   const marathon = useLoaderData();
   const registrationCount = marathon.registrationCount || 0;
 
@@ -18,9 +20,9 @@ const MarathonsDetails = () => {
   const isRegistrationClosed = now > endRegDate;
   const isRegistrationOpen = !isRegistrationNotStarted && !isRegistrationClosed;
 
-  const handleRegisterClick = () => {
-    window.location.href = `/marathons/${marathon._id}/register`;
-  };
+const handleRegisterClick = () => {
+  navigate(`/marathons/${marathon._id}/register`);
+};
 
   // Format dates for display
   const formatDate = (date) => {
@@ -35,7 +37,7 @@ const MarathonsDetails = () => {
     <div className="min-h-screen bg-[url('https://i.postimg.cc/B6DNk4DX/klim-musalimov-r-DMacl1-FDjw-unsplash.jpg')] bg-cover bg-center">
       {/* Hero Section */}
       <div
-        className="relative h-64 md:h-80 flex items-center justify-center bg-cover bg-center bg-no-repeat"
+        className="relative h-64 pt-16 flex items-center justify-center bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: "url('https://i.postimg.cc/T2sbwf8W/pexels-dmitrii-eremin-67499966-15741250.jpg')",
         }}
