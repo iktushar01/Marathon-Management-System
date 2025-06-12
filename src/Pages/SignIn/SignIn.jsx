@@ -8,6 +8,7 @@ const SignIn = () => {
   const { signInUser } = useContext(AuthContext);
   const location = useLocation();
   console.log(location);
+  const redirect = location.state || "/";
   const navigate = useNavigate();
 
   const [error, setError] = useState(null);
@@ -26,7 +27,7 @@ const SignIn = () => {
     signInUser(email, password)
       .then((result) => {
         console.log("Login successful", result.user);
-        navigate(`${location.state ? location.state : "/"}  `);
+        navigate(redirect);
       })
       .catch((error) => {
         console.log("Login error:", error);
@@ -120,7 +121,7 @@ const SignIn = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <GoogleLogin />
+            <GoogleLogin redirect = {redirect}></GoogleLogin>
           </motion.div>
 
           <motion.div

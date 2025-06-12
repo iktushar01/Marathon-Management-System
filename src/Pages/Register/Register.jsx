@@ -1,30 +1,35 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContext";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 import { motion } from "framer-motion";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
-  
-  const handleRegister = e => {
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  console.log(location);
+  const redirect = location.state || "/";
+  const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const photoURL = form.photoURL.value;
     const password = form.password.value;
-    const userData = {name, email, photoURL, password};
+    const userData = { name, email, photoURL, password };
     console.log(userData);
 
     // create user
     createUser(email, password)
-    .then(result => {
-      console.log(result.user);
-    })
-    .catch(error => {
-      console.log(error);
-    });
+      .then((result) => {
+        console.log(result.user);
+        navigate(redirect);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -121,10 +126,30 @@ const Register = () => {
           </motion.div>
 
           {[
-            { name: "name", placeholder: "Full Name", type: "text", delay: 0.6 },
-            { name: "email", placeholder: "Email Address", type: "email", delay: 0.65 },
-            { name: "photoURL", placeholder: "Photo URL", type: "text", delay: 0.7 },
-            { name: "password", placeholder: "Password", type: "password", delay: 0.75 }
+            {
+              name: "name",
+              placeholder: "Full Name",
+              type: "text",
+              delay: 0.6,
+            },
+            {
+              name: "email",
+              placeholder: "Email Address",
+              type: "email",
+              delay: 0.65,
+            },
+            {
+              name: "photoURL",
+              placeholder: "Photo URL",
+              type: "text",
+              delay: 0.7,
+            },
+            {
+              name: "password",
+              placeholder: "Password",
+              type: "password",
+              delay: 0.75,
+            },
           ].map((field) => (
             <motion.div
               key={field.name}
