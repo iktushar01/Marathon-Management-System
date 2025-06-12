@@ -4,6 +4,7 @@ import MarathonsCardHome from "./MarathonCardHome";
 import { useLoaderData } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import UpcomingMarathon from "./UpcomingMarathon";
+import DownloadablesSection from "./DownloadablesSection";
 
 const Home = () => {
   const allMarathons = useLoaderData();
@@ -29,7 +30,7 @@ const Home = () => {
         setDisplayedMarathons(getRandomMarathons());
         setIsAnimating(false);
       }, 1000); // Duration matches animation
-    }, 20000); // 10 seconds
+    }, 500000); // 50 seconds
 
     return () => clearInterval(interval);
   }, [allMarathons]);
@@ -123,7 +124,9 @@ const Home = () => {
               </div>
             ))}
           </div>
+       
         </div>
+           <DownloadablesSection/>
       </div>
     </div>
   );
