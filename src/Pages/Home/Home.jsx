@@ -5,6 +5,7 @@ import { useLoaderData } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import UpcomingMarathon from "./UpcomingMarathon";
 import DownloadablesSection from "./DownloadablesSection";
+import SponsorShowcase from "./SponsorShowcase";
 
 const Home = () => {
   const allMarathons = useLoaderData();
@@ -127,7 +128,9 @@ const Home = () => {
        
         </div>
            <DownloadablesSection/>
+           
       </div>
+      <SponsorShowcase/>
     </div>
   );
 };
