@@ -5,7 +5,7 @@ import MarathonsCard from "./MarathonsCard";
 const Marathons = () => {
   const marathons = useLoaderData();
   return (
-    <div className="min-h-screen bg-[url('https://i.postimg.cc/B6DNk4DX/klim-musalimov-r-DMacl1-FDjw-unsplash.jpg')] bg-cover bg-center">
+    <div className="min-h-screen bg-gray-900">
       {/* Hero Section */}
       <div
         className="relative h-64 md:h-64 flex items-center justify-center pt-18 md:pt-16 bg-cover bg-center bg-no-repeat"

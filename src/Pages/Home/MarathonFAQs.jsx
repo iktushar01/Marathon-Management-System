@@ -50,7 +50,7 @@ const MarathonFAQs = () => {
       {/* Content Section */}
       <div className="flex flex-col lg:flex-row items-center justify-center gap-8 max-w-7xl mx-auto">
         {/* Animation Section */}
-        <div className="w-full lg:w-1/2">
+        <div className="w-full lg:w-1/2 ">
           <Lottie 
             animationData={marathonAnimation} 
             loop={true}

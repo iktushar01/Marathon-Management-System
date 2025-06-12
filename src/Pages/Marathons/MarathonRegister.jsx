@@ -56,7 +56,7 @@ const MarathonRegister = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-yellow-300">
+    <div className="min-h-screen bg-gray-900 text-yellow-300">
       {/* Hero Section */}
       <div
         className="relative h-64 pt-16 flex items-center justify-center bg-cover bg-center bg-no-repeat"
@@ -83,7 +83,7 @@ const MarathonRegister = () => {
 
       {/* Registration Form */}
       <div className="container mx-auto px-4 py-12 ">
-        <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+        <div className="bg-gray-800 rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
           {/* Marathon Image */}
           <div className="md:w-1/2">
             <img

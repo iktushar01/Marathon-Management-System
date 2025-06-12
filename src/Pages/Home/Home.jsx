@@ -77,7 +77,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-black">
+    <div className="bg-gray-900">
       <BannerSlider></BannerSlider>
       <div className="container mx-auto ">
         <div className="text-center text-yellow-400 py-8">

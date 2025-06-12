@@ -7,7 +7,7 @@ const UpcomingMarathon = ({ marathon }) => {
 
   return (
     <div>
-      <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+      <div className="bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-yellow-400">
         <div className="relative group">
           <img
             src={image}
@@ -18,7 +18,7 @@ const UpcomingMarathon = ({ marathon }) => {
           
           {/* Overlay that appears on hover */}
           <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
-            <span className="text-4xl font-bold text-white mb-4">UPCOMING</span>
+            <span className="text-4xl font-bold text-yellow-400 mb-4">UPCOMING</span>
             <div className="text-white text-center space-y-2">
               <p className="text-xl font-semibold">{title}</p>
               <p className="flex items-center justify-center">
