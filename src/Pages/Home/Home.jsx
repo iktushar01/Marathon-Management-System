@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import UpcomingMarathon from "./UpcomingMarathon";
 import DownloadablesSection from "./DownloadablesSection";
 import SponsorShowcase from "./SponsorShowcase";
+import MarathonFAQs from "./MarathonFAQs";
 
 const Home = () => {
   const allMarathons = useLoaderData();
@@ -131,6 +132,9 @@ const Home = () => {
            
       </div>
       <SponsorShowcase/>
+      <div className="container mx-auto">
+        <MarathonFAQs/>
+      </div>
     </div>
   );
 };
