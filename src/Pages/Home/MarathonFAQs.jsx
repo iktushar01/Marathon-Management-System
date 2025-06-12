@@ -50,17 +50,16 @@ const MarathonFAQs = () => {
       {/* Content Section */}
       <div className="flex flex-col lg:flex-row items-center justify-center gap-8 max-w-7xl mx-auto">
         {/* Animation Section */}
-        <div className="w-full lg:w-2/5">
+        <div className="w-full lg:w-1/2">
           <Lottie 
             animationData={marathonAnimation} 
             loop={true}
             aria-hidden="true"
-            className="max-h-[400px]"
           />
         </div>
 
         {/* FAQ Accordion Section */}
-        <div className="w-full lg:w-3/5 space-y-4">
+        <div className="w-full lg:w-1/2 space-y-4">
           {MARATHON_FAQS.map((item, index) => (
             <div 
               key={index}
