@@ -7,19 +7,14 @@ import { motion } from "framer-motion";
 const SignIn = () => {
   const { signInUser } = useContext(AuthContext);
   const location = useLocation();
+  console.log(location);
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/";
-  console.log("Redirect from:", from);
 
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  console.log("location in sign in page", location);
 
   const handleSignIn = (e) => {
     e.preventDefault();
     setError(null);
-    setLoading(true);
 
     const form = e.target;
     const email = form.email.value;
@@ -31,25 +26,23 @@ const SignIn = () => {
     signInUser(email, password)
       .then((result) => {
         console.log("Login successful", result.user);
-        setLoading(false);
-        navigate(from, { replace: true });
+        navigate(`${location.state ? location.state : "/"}  `);
       })
       .catch((error) => {
         console.log("Login error:", error);
         setError(error.message || "Login failed");
-        setLoading(false);
       });
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="min-h-screen flex flex-col md:flex-row"
     >
       {/* Left Side with Background Video */}
-      <motion.div 
+      <motion.div
         initial={{ x: -100 }}
         animate={{ x: 0 }}
         transition={{ duration: 0.5 }}
@@ -71,13 +64,13 @@ const SignIn = () => {
         </video>
 
         {/* Foreground Content */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
           className="relative z-10 text-white text-center px-6 py-8 rounded-lg mx-4"
         >
-          <motion.h1 
+          <motion.h1
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             transition={{ delay: 0.5 }}
@@ -85,7 +78,7 @@ const SignIn = () => {
           >
             Welcome to <span className="text-yellow-400">Our Stridez</span>
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ y: 20 }}
             animate={{ y: 0 }}
             transition={{ delay: 0.7 }}
@@ -100,20 +93,20 @@ const SignIn = () => {
       </motion.div>
 
       {/* Login Form */}
-      <motion.div 
+      <motion.div
         initial={{ x: 100 }}
         animate={{ x: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full md:w-1/2 flex items-center justify-center py-10 bg-[url('https://i.postimg.cc/5N2L0MJd/nordwood-themes-R53t-Tg6-J4c-unsplash.jpg')] bg-cover bg-center min-h-screen"
       >
-        <motion.form 
+        <motion.form
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.3 }}
-          onSubmit={handleSignIn} 
+          onSubmit={handleSignIn}
           className="w-80 space-y-5 my-30 md:my-0"
         >
-          <motion.h2 
+          <motion.h2
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             transition={{ delay: 0.4 }}
@@ -188,14 +181,9 @@ const SignIn = () => {
           >
             <button
               type="submit"
-              className={`w-full bg-yellow-400 hover:bg-yellow-300 text-black py-2 font-semibold rounded transition duration-300 btn ${
-                loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
-              disabled={loading}
-              whileHover={!loading ? { scale: 1.02 } : {}}
-              whileTap={!loading ? { scale: 0.98 } : {}}
+              className="w-full bg-yellow-400 hover:bg-yellow-300 text-black py-2 font-semibold rounded transition duration-300 btn"
             >
-              {loading ? "Logging in..." : "Log In"}
+              Log In
             </button>
           </motion.div>
 

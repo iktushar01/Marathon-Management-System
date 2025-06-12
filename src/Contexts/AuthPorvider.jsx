@@ -47,6 +47,7 @@ const AuthPorvider = ({ children }) => {
     googleSignIn,
     user,
     loading,
+    setLoading
   };
   return <AuthContext value={authInfo}>{children}</AuthContext>;
 };

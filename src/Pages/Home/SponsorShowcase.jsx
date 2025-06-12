@@ -93,7 +93,7 @@ const SponsorMarquee = () => {
 
       {/* Marquee Section */}
       <div ref={ref} className="bg-cyan-950">
-        <div className="container relative overflow-hidden mx-auto px-4 sm:px-6 lg:px-8 py-4 md-py-16">
+        <div className="container relative overflow-hidden mx-auto px-4 sm:px-6 lg:px-8 py-4 md:h-60 pt-6">
 
           {/* Marquee - First Row */}
           <motion.div
