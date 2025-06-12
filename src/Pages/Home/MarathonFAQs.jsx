@@ -63,7 +63,7 @@ const MarathonFAQs = () => {
           {MARATHON_FAQS.map((item, index) => (
             <div 
               key={index}
-              className="collapse collapse-plus bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm"
+              className="collapse collapse-plus bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 border border-gray-200 dark:border-yellow-400 rounded-lg shadow-sm"
             >
               <input 
                 type="radio" 
