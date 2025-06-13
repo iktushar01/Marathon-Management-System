@@ -12,11 +12,11 @@ const DashBoardLayout = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
+      <ScrollToTop />
       <div className="hidden lg:block">
         <SmoothFollower />
       </div>
 
-      <ScrollToTop />
       <Navbar />
 
       {/* Global Loader while dashboard routes are loading */}
