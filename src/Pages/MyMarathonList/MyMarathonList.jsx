@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContext";
-import { FaEdit, FaTrash, FaTimes, FaSpinner, FaRunning, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { FaEdit, FaTrash, FaTimes, FaSpinner, FaRunning, FaCalendarAlt, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Datepicker from "../../Components/DatePicker/Datepicker";
 
@@ -9,10 +9,15 @@ const MyMarathonList = () => {
   const marathons = useLoaderData();
   const { user } = useContext(AuthContext);
 
-  // Filter marathons to only show those created by the current user
-  const myMarathons = marathons.filter(
-    (marathon) => marathon.userEmail === user.email
-  );
+  // State for search term
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter marathons to only show those created by the current user and match search term
+  const myMarathons = marathons
+    .filter((marathon) => marathon.userEmail === user.email)
+    .filter((marathon) => 
+      marathon.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   // State for modals
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -31,6 +36,11 @@ const MyMarathonList = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errors, setErrors] = useState({});
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   // Handle update button click
   const handleUpdateClick = (marathon) => {
@@ -122,8 +132,8 @@ const MyMarathonList = () => {
       });
       setShowUpdateModal(false);
       setTimeout(() => {
-    window.location.reload();
-  }, 500);
+        window.location.reload();
+      }, 500);
     } catch (error) {
       Swal.fire({
         title: "Error!",
@@ -157,8 +167,8 @@ const MyMarathonList = () => {
       });
       setShowDeleteModal(false);
       setTimeout(() => {
-    window.location.reload();
-  }, 500);
+        window.location.reload();
+      }, 500);
     } catch (error) {
       Swal.fire({
         title: "Error!",
@@ -191,9 +201,45 @@ const MyMarathonList = () => {
           </p>
         </div>
 
+        {/* Search Bar */}
+        <div className="mb-6 max-w-2xl mx-auto">
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaSearch className="text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search by marathon title..."
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              >
+                <FaTimes className="text-gray-400 hover:text-gray-600" />
+              </button>
+            )}
+          </div>
+        </div>
+
         {myMarathons.length === 0 ? (
           <div className="bg-white rounded-xl shadow-md p-8 text-center">
-            <p className="text-gray-600">You haven't created any marathons yet.</p>
+            <p className="text-gray-600">
+              {searchTerm 
+                ? `No marathons found for "${searchTerm}"`
+                : "You haven't created any marathons yet."}
+            </p>
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="mt-4 text-yellow-500 hover:text-yellow-600 font-medium"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -226,10 +272,8 @@ const MyMarathonList = () => {
                     <tr key={marathon._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div>
-                    
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">{marathon.title}</div>
-                            
                           </div>
                         </div>
                       </td>
