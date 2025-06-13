@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../Firebase/firebase.init";
-const AuthPorvider = ({ children }) => {
+import Loading from "../Shared/Loading/Loading";
 
+const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
@@ -13,32 +21,35 @@ const AuthPorvider = ({ children }) => {
   };
 
   const signInUser = (email, password) => {
-        setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password)
-  }
-
-  const signOutUser = () =>{
     setLoading(true);
-    return signOut(auth)
-  }
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const signOutUser = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
 
   // Google Sign In
   const googleProvider = new GoogleAuthProvider();
   const googleSignIn = () => {
-        setLoading(true)
+    setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, currentUser =>{
-        setUser(currentUser);
-        setLoading(false);
-        console.log('user in the auth state change', currentUser)
-    })
-    return () => {
-        unSubscribe()
-    }
-  },[])
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+    
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    console.log("user in the auth state change", currentUser);
+  });
+
+  return () => unsubscribe();
+}, []);
+
 
   const authInfo = {
     createUser,
@@ -47,9 +58,15 @@ const AuthPorvider = ({ children }) => {
     googleSignIn,
     user,
     loading,
-    setLoading
+    setLoading,
   };
-  return <AuthContext value={authInfo}>{children}</AuthContext>;
+
+  // ✅ Corrected Provider usage here
+  return (
+    <AuthContext.Provider value={authInfo}>
+      {loading ? <Loading /> : children}
+    </AuthContext.Provider>
+  );
 };
 
-export default AuthPorvider;
+export default AuthProvider;
