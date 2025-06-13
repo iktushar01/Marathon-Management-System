@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-        loader: () => fetch("http://localhost:4000/marathons"),
+        loader: () => fetch("https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/marathons"),
       },
       {
         path:"/profileinfo",
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       {
         path: "marathons",
         element: <Marathons />,
-        loader: () => fetch("http://localhost:4000/marathons"),
+        loader: () => fetch("https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/marathons"),
       },
       {
         path: "marathons/:id",
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
           </PrivateRoutes>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:4000/marathons/${params.id}`),
+          fetch(`https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/marathons/${params.id}`),
       },
       {
         path: "marathons/:id/register",
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
           </PrivateRoutes>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:4000/marathons/${params.id}`),
+          fetch(`https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/marathons/${params.id}`),
       },
       { path: "signin", element: <SignIn /> },
       { path: "register", element: <Register /> },
@@ -72,8 +72,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <AddMarathon /> },
       { path: "add-marathon", element: <AddMarathon /> },
-      { path: "my-marathons", element: <MyMarathonList /> , loader: () => fetch("http://localhost:4000/marathons"), },
-      { path: "my-applies", element: <MyApplyList />, loader: () => fetch("http://localhost:4000/registrations"), },
+      { path: "my-marathons", element: <MyMarathonList /> , loader: () => fetch("https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/marathons"), },
+      { path: "my-applies", element: <MyApplyList />, loader: () => fetch("https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/registrations"), },
     ],
   },
 ]);

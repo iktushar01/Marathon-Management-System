@@ -79,7 +79,7 @@ const MyApplyList = () => {
     setIsUpdating(true);
 
     try {
-      const response = await fetch(`http://localhost:4000/registrations/${selectedRegistration._id}`, {
+      const response = await fetch(`https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/registrations/${selectedRegistration._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const MyApplyList = () => {
     setIsDeleting(true);
 
     try {
-      const response = await fetch(`http://localhost:4000/registrations/${selectedRegistration._id}`, {
+      const response = await fetch(`https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/registrations/${selectedRegistration._id}`, {
         method: 'DELETE',
       });
 
