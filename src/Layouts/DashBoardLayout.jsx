@@ -6,13 +6,15 @@ import SmoothFollower from "../Shared/Cursor/SmoothFollower";
 import { motion } from "framer-motion";
 import Loading from "../Shared/Loading/Loading";
 
-
 const DashBoardLayout = () => {
   const navigation = useNavigation();
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <SmoothFollower />
+      <div className="hidden lg:block">
+        <SmoothFollower />
+      </div>
+
       <Navbar />
 
       {/* Global Loader while dashboard routes are loading */}
