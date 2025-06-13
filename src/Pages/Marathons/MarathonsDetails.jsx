@@ -104,7 +104,7 @@ const MarathonsDetails = () => {
     >
       {/* Hero Section */}
       <motion.div
-        className="relative h-80 pt-20 flex items-center justify-center bg-cover bg-center bg-no-repeat"
+        className="relative h-64 pt-20 flex items-center justify-center bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: "url('https://i.postimg.cc/T2sbwf8W/pexels-dmitrii-eremin-67499966-15741250.jpg')",
         }}

@@ -13,6 +13,8 @@ import MarathonsDetails from "../Pages/Marathons/MarathonsDetails";
 import PrivateRoutes from "../Routes/PrivateRoutes";
 import ProfileInfo from "../Shared/Navbar/ProfileInfo";
 import MarathonRegister from "../Pages/Marathons/MarathonRegister";
+import Privacy from "../Pages/Privacy/Privacy";
+import Terms from "../Pages/Terms/Terms";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +58,8 @@ const router = createBrowserRouter([
       },
       { path: "signin", element: <SignIn /> },
       { path: "register", element: <Register /> },
+      { path: "privacy", element: <Privacy /> },
+      { path: "terms", element: <Terms /> },
     ],
   },
   {

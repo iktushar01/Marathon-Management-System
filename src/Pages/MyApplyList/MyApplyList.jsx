@@ -98,7 +98,9 @@ const MyApplyList = () => {
         confirmButtonColor: "#F59E0B",
       });
       setShowUpdateModal(false);
-      window.location.reload();
+      setTimeout(() => {
+    window.location.reload();
+  }, 500);
     } catch (error) {
       Swal.fire({
         title: "Error!",
@@ -131,7 +133,9 @@ const MyApplyList = () => {
         confirmButtonColor: "#F59E0B",
       });
       setShowDeleteModal(false);
-      window.location.reload();
+     setTimeout(() => {
+    window.location.reload();
+  }, 500);
     } catch (error) {
       Swal.fire({
         title: "Error!",
