@@ -4,6 +4,7 @@ import Navbar from "../Shared/Navbar/Navbar";
 import Footer from "../Shared/Footer/Footer";
 import SmoothFollower from "../Shared/Cursor/SmoothFollower";
 import Loading from "../Shared/Loading/Loading";
+import ScrollToTop from "../Hooks/ScrollToTop";
 
 const MainLayout = () => {
   const navigation = useNavigation();
@@ -14,6 +15,8 @@ const MainLayout = () => {
       <div className="hidden lg:block">
         <SmoothFollower />
       </div>
+
+      <ScrollToTop />
 
       {/* Navbar */}
       <Navbar />

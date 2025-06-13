@@ -5,6 +5,7 @@ import Footer from "../Shared/Footer/Footer";
 import SmoothFollower from "../Shared/Cursor/SmoothFollower";
 import { motion } from "framer-motion";
 import Loading from "../Shared/Loading/Loading";
+import ScrollToTop from "../Hooks/ScrollToTop";
 
 const DashBoardLayout = () => {
   const navigation = useNavigation();
@@ -15,6 +16,7 @@ const DashBoardLayout = () => {
         <SmoothFollower />
       </div>
 
+      <ScrollToTop />
       <Navbar />
 
       {/* Global Loader while dashboard routes are loading */}
