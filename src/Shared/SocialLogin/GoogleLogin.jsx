@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from '../../Contexts/AuthContext';
 import { useNavigate } from 'react-router';
+import Swal from 'sweetalert2';
 
 const GoogleLogin = ({redirect}) => {
     const { googleSignIn } = useContext(AuthContext)
@@ -10,10 +11,23 @@ const GoogleLogin = ({redirect}) => {
         googleSignIn()
         .then(result => {
             console.log(result)
-            navigate(redirect || "/");
+            Swal.fire({
+                title: 'Success!',
+                text: 'You have successfully logged in with Google',
+                icon: 'success',
+                confirmButtonText: 'Cool'
+            }).then(() => {
+                navigate(redirect || "/");
+            });
         })
         .catch(error =>{
             console.log(error)
+            Swal.fire({
+                title: 'Error!',
+                text: error.message || 'Failed to login with Google',
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            });
         })
     }
     return (

@@ -3,11 +3,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContext";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 import { motion } from "framer-motion";
+import Swal from 'sweetalert2';
 
 const SignIn = () => {
   const { signInUser } = useContext(AuthContext);
   const location = useLocation();
-  console.log(location);
   const redirect = location.state || "/";
   const navigate = useNavigate();
 
@@ -21,17 +21,44 @@ const SignIn = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    const userData = { email, password };
-    console.log(userData);
-
     signInUser(email, password)
       .then((result) => {
-        console.log("Login successful", result.user);
-        navigate(redirect);
+        Swal.fire({
+          title: 'Login Successful!',
+          text: 'You have been logged in successfully',
+          icon: 'success',
+          confirmButtonText: 'Continue',
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        }).then(() => {
+          navigate(redirect);
+        });
       })
       .catch((error) => {
-        console.log("Login error:", error);
-        setError(error.message || "Login failed");
+        let errorMessage = 'Login failed. Please try again.';
+        
+        // Handle specific Firebase errors
+        if (error.code === 'auth/user-not-found') {
+          errorMessage = 'No user found with this email.';
+        } else if (error.code === 'auth/wrong-password') {
+          errorMessage = 'Incorrect password. Please try again.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'Please enter a valid email address.';
+        } else if (error.code === 'auth/too-many-requests') {
+          errorMessage = 'Too many attempts. Account temporarily locked.';
+        }
+
+        setError(errorMessage);
+        
+        Swal.fire({
+          title: 'Login Error',
+          text: errorMessage,
+          icon: 'error',
+          confirmButtonText: 'Try Again',
+        });
       });
   };
 
@@ -121,7 +148,7 @@ const SignIn = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <GoogleLogin redirect = {redirect}></GoogleLogin>
+            <GoogleLogin redirect={redirect} />
           </motion.div>
 
           <motion.div

@@ -3,14 +3,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContext";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 import { motion } from "framer-motion";
+import Swal from 'sweetalert2';
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const location = useLocation();
-  console.log(location);
   const redirect = location.state || "/";
+
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -19,16 +20,39 @@ const Register = () => {
     const photoURL = form.photoURL.value;
     const password = form.password.value;
     const userData = { name, email, photoURL, password };
-    console.log(userData);
 
     // create user
     createUser(email, password)
       .then((result) => {
-        console.log(result.user);
-        navigate(redirect);
+        Swal.fire({
+          title: 'Success!',
+          text: 'Account created successfully',
+          icon: 'success',
+          confirmButtonText: 'Continue',
+          timer: 2000,
+          timerProgressBar: true,
+        }).then(() => {
+          navigate(redirect);
+        });
       })
       .catch((error) => {
-        console.log(error);
+        let errorMessage = 'Registration failed. Please try again.';
+        
+        // Handle specific Firebase errors
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = 'This email is already registered.';
+        } else if (error.code === 'auth/weak-password') {
+          errorMessage = 'Password should be at least 6 characters.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'Please enter a valid email address.';
+        }
+
+        Swal.fire({
+          title: 'Registration Error',
+          text: errorMessage,
+          icon: 'error',
+          confirmButtonText: 'Try Again',
+        });
       });
   };
 
