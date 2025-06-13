@@ -69,6 +69,7 @@ const router = createBrowserRouter([
         <DashBoardLayout />
       </PrivateRoutes>
     ),
+    errorElement: <Error />, 
     children: [
       { index: true, element: <AddMarathon /> },
       { path: "add-marathon", element: <AddMarathon /> },
