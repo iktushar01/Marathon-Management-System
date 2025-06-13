@@ -23,7 +23,7 @@ const MarathonRegister = () => {
     };
 
     try {
-      const res = await fetch("https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/registrations", {
+      const res = await fetch("https://stridez-server.vercel.app/registrations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

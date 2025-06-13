@@ -97,7 +97,7 @@ const MyMarathonList = () => {
     setIsUpdating(true);
 
     try {
-      const response = await fetch(`https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/marathons/${selectedMarathon._id}`, {
+      const response = await fetch(`https://stridez-server.vercel.app/marathons/${selectedMarathon._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ const MyMarathonList = () => {
     setIsDeleting(true);
 
     try {
-      const response = await fetch(`https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/marathons/${selectedMarathon._id}`, {
+      const response = await fetch(`https://stridez-server.vercel.app/marathons/${selectedMarathon._id}`, {
         method: 'DELETE',
       });
 

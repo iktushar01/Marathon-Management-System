@@ -71,7 +71,7 @@ const AddMarathon = () => {
     };
 
     try {
-      const res = await fetch("https://stridez-server-cqoof3ftt-tushars-projects-188d83fb.vercel.app/marathons", {
+      const res = await fetch("https://stridez-server.vercel.app/marathons", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
