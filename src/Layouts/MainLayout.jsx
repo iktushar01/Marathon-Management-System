@@ -5,16 +5,15 @@ import Footer from "../Shared/Footer/Footer";
 import SmoothFollower from "../Shared/Cursor/SmoothFollower";
 import Loading from "../Shared/Loading/Loading";
 import ScrollToTop from "../Hooks/ScrollToTop";
+import useIsLargeScreen from "../hooks/useIsLargeScreen";
 
 const MainLayout = () => {
   const navigation = useNavigation();
-
+  const isLarge = useIsLargeScreen();
   return (
     <div>
       {/* Global Mouse Cursor */}
-      <div className="hidden lg:block">
-        <SmoothFollower />
-      </div>
+      {isLarge && <SmoothFollower />}
 
       <ScrollToTop />
 

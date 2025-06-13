@@ -6,16 +6,18 @@ import SmoothFollower from "../Shared/Cursor/SmoothFollower";
 import { motion } from "framer-motion";
 import Loading from "../Shared/Loading/Loading";
 import ScrollToTop from "../Hooks/ScrollToTop";
+import useIsLargeScreen from "../hooks/useIsLargeScreen";
+
 
 const DashBoardLayout = () => {
   const navigation = useNavigation();
+    const isLarge = useIsLargeScreen();
+
 
   return (
     <div className="min-h-screen bg-gray-900">
       <ScrollToTop />
-      <div className="hidden lg:block">
-        <SmoothFollower />
-      </div>
+     {isLarge && <SmoothFollower />}
 
       <Navbar />
 
