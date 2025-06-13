@@ -13,7 +13,7 @@ const bannerData = [
     description:
       "Join our premier marathons and challenge your limits on global tracks.",
     image:
-      "https://i.postimg.cc/Y2gWpLRT/pexels-dmitrii-eremin-67499966-15741250.jpg",
+      "https://i.postimg.cc/cHyg7bF3/pexels-runffwpu-2402735.jpg",
   },
   {
     title: "Race. Connect. Conquer.",
