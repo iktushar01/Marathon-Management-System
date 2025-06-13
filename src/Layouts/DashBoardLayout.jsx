@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 const DashBoardLayout = () => {
   return (
-    <div className="min-h-screen bg-gray-900 bg-opacity-90 bg-[url('https://i.postimg.cc/B6DNk4DX/klim-musalimov-r-DMacl1-FDjw-unsplash.jpg')] bg-cover bg-center bg-fixed bg-blend-overlay">
+    <div className="min-h-screen bg-gray-900 ">
       <SmoothFollower />
       <Navbar />
 

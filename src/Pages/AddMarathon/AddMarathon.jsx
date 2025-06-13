@@ -160,8 +160,8 @@ const AddMarathon = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="lg:w-1/3"
           >
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden h-full">
-              <div className="relative h-48 bg-gradient-to-r from-amber-400 to-yellow-500">
+            <div className="bg-gray-800 rounded-xl shadow-lg overflow-hidden h-full">
+              <div className="relative h-48 bg-gradient-to-r from-amber-800 to-yellow-900">
                 <img
                   src="https://i.postimg.cc/sgpNVTNb/abdur-ahmanus-t-2-Ov-WCSd34-unsplash.jpg"
                   alt="Marathon"
@@ -180,10 +180,10 @@ const AddMarathon = () => {
                       <FiCalendar className="text-amber-600" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-800">
+                      <h3 className="font-medium text-gray-100">
                         Date Selection
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-200">
                         Ensure registration dates are before the marathon date
                       </p>
                     </div>
@@ -193,10 +193,10 @@ const AddMarathon = () => {
                       <FiAward className="text-amber-600" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-800">
+                      <h3 className="font-medium text-gray-100">
                         Distance Options
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-200">
                         Provide clear distance options for participants
                       </p>
                     </div>
@@ -206,8 +206,8 @@ const AddMarathon = () => {
                       <FiImage className="text-amber-600" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-800">Event Image</h3>
-                      <p className="text-sm text-gray-600">
+                      <h3 className="font-medium text-gray-100">Event Image</h3>
+                      <p className="text-sm text-gray-200">
                         Use high-quality images that represent your event
                       </p>
                     </div>
@@ -229,16 +229,16 @@ const AddMarathon = () => {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="bg-white rounded-xl shadow-lg overflow-hidden p-6 md:p-8"
+              className="bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 md:p-8"
             >
               <motion.div variants={itemVariants} className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-800 border-b pb-2 border-amber-200">
+                <h2 className="text-2xl font-bold text-yellow-400 border-b pb-2 border-amber-200">
                   Marathon Details
                 </h2>
               </motion.div>
 
               <motion.div variants={itemVariants} className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-100 mb-1">
                   Marathon Title
                 </label>
                 <div className="relative">
@@ -246,12 +246,12 @@ const AddMarathon = () => {
                     type="text"
                     name="title"
                     placeholder="Marathon Title"
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.title ? "border-red-500" : "border-gray-300"
+                    className={`w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-100 border ${
+                      errors.title ? "border-red-500" : "border-yellow-400"
                     } focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                   />
                   {errors.title && (
-                    <p className="mt-1 text-sm text-red-600">{errors.title}</p>
+                    <p className="mt-1 text-sm text-red-400">{errors.title}</p>
                   )}
                 </div>
               </motion.div>
@@ -261,7 +261,7 @@ const AddMarathon = () => {
                 className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
               >
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-100 mb-1">
                     Start Registration Date
                   </label>
                   <div className="relative">
@@ -269,19 +269,21 @@ const AddMarathon = () => {
                       value={startRegDate}
                       onChange={setStartRegDate}
                       placeholder="Select start date"
-                      className={`w-full ${
-                        errors.startRegDate ? "border-red-500" : ""
+                      className={`w-full bg-gray-700 text-gray-100 ${
+                        errors.startRegDate
+                          ? "border-red-500"
+                          : "border-yellow-400"
                       }`}
                     />
                     {errors.startRegDate && (
-                      <p className="mt-1 text-sm text-red-600">
+                      <p className="mt-1 text-sm text-red-400">
                         {errors.startRegDate}
                       </p>
                     )}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-100 mb-1">
                     End Registration Date
                   </label>
                   <div className="relative">
@@ -289,12 +291,14 @@ const AddMarathon = () => {
                       value={endRegDate}
                       onChange={setEndRegDate}
                       placeholder="Select end date"
-                      className={`w-full ${
-                        errors.endRegDate ? "border-red-500" : ""
+                      className={`w-full bg-gray-700 text-gray-100 ${
+                        errors.endRegDate
+                          ? "border-red-500"
+                          : "border-yellow-400"
                       }`}
                     />
                     {errors.endRegDate && (
-                      <p className="mt-1 text-sm text-red-600">
+                      <p className="mt-1 text-sm text-red-400">
                         {errors.endRegDate}
                       </p>
                     )}
@@ -303,7 +307,7 @@ const AddMarathon = () => {
               </motion.div>
 
               <motion.div variants={itemVariants} className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-100 mb-1">
                   Marathon Start Date
                 </label>
                 <div className="relative">
@@ -311,12 +315,14 @@ const AddMarathon = () => {
                     value={marathonStartDate}
                     onChange={setMarathonStartDate}
                     placeholder="Select marathon date"
-                    className={`w-full ${
-                      errors.marathonStartDate ? "border-red-500" : ""
+                    className={`w-full bg-gray-700 text-gray-100 ${
+                      errors.marathonStartDate
+                        ? "border-red-500"
+                        : "border-yellow-400"
                     }`}
                   />
                   {errors.marathonStartDate && (
-                    <p className="mt-1 text-sm text-red-600">
+                    <p className="mt-1 text-sm text-red-400">
                       {errors.marathonStartDate}
                     </p>
                   )}
@@ -324,7 +330,7 @@ const AddMarathon = () => {
               </motion.div>
 
               <motion.div variants={itemVariants} className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                <label className="block text-sm font-medium text-gray-100 mb-1 flex items-center gap-2">
                   <FiMapPin className="text-amber-500" />
                   Location
                 </label>
@@ -333,12 +339,12 @@ const AddMarathon = () => {
                     type="text"
                     name="location"
                     placeholder="Event location"
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.location ? "border-red-500" : "border-gray-300"
+                    className={`w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-100 border ${
+                      errors.location ? "border-red-500" : "border-yellow-400"
                     } focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                   />
                   {errors.location && (
-                    <p className="mt-1 text-sm text-red-600">
+                    <p className="mt-1 text-sm text-red-400">
                       {errors.location}
                     </p>
                   )}
@@ -346,16 +352,16 @@ const AddMarathon = () => {
               </motion.div>
 
               <motion.div variants={itemVariants} className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                <label className="block text-sm font-medium text-gray-100 mb-1 flex items-center gap-2">
                   <FiAward className="text-amber-500" />
                   Running Distance
                 </label>
                 <div className="relative">
                   <select
                     name="distance"
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.distance ? "border-red-500" : "border-gray-300"
-                    } focus:ring-2 focus:ring-amber-500 focus:border-transparent appearance-none bg-white`}
+                    className={`w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-100 border ${
+                      errors.distance ? "border-red-500" : "border-yellow-400"
+                    } focus:ring-2 focus:ring-amber-500 focus:border-transparent appearance-none`}
                     defaultValue=""
                   >
                     <option value="" disabled>
@@ -367,13 +373,13 @@ const AddMarathon = () => {
                     <option value="42k">Full Marathon (42K)</option>
                   </select>
                   {errors.distance && (
-                    <p className="mt-1 text-sm text-red-600">
+                    <p className="mt-1 text-sm text-red-400">
                       {errors.distance}
                     </p>
                   )}
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                     <svg
-                      className="h-5 w-5 text-gray-400"
+                      className="h-5 w-5 text-amber-500"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                       fill="currentColor"
@@ -389,7 +395,7 @@ const AddMarathon = () => {
               </motion.div>
 
               <motion.div variants={itemVariants} className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                <label className="block text-sm font-medium text-gray-100 mb-1 flex items-center gap-2">
                   <FiAlignLeft className="text-amber-500" />
                   Description
                 </label>
@@ -398,12 +404,14 @@ const AddMarathon = () => {
                     name="description"
                     rows="4"
                     placeholder="Event description..."
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.description ? "border-red-500" : "border-gray-300"
+                    className={`w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-100 border ${
+                      errors.description
+                        ? "border-red-500"
+                        : "border-yellow-400"
                     } focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                   ></textarea>
                   {errors.description && (
-                    <p className="mt-1 text-sm text-red-600">
+                    <p className="mt-1 text-sm text-red-400">
                       {errors.description}
                     </p>
                   )}
@@ -411,7 +419,7 @@ const AddMarathon = () => {
               </motion.div>
 
               <motion.div variants={itemVariants} className="mb-8">
-                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                <label className="block text-sm font-medium text-gray-100 mb-1 flex items-center gap-2">
                   <FiImage className="text-amber-500" />
                   Marathon Image URL
                 </label>
@@ -420,15 +428,15 @@ const AddMarathon = () => {
                     name="image"
                     type="text"
                     placeholder="https://example.com/image.jpg"
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.image ? "border-red-500" : "border-gray-300"
+                    className={`w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-100 border ${
+                      errors.image ? "border-red-500" : "border-yellow-400"
                     } focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                   />
                   {errors.image && (
-                    <p className="mt-1 text-sm text-red-600">{errors.image}</p>
+                    <p className="mt-1 text-sm text-red-400">{errors.image}</p>
                   )}
                 </div>
-                <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
+                <div className="mt-2 flex items-center gap-2 text-sm text-amber-400">
                   <FiUpload className="text-amber-500" />
                   <span>Or upload an image (coming soon)</span>
                 </div>
@@ -438,14 +446,14 @@ const AddMarathon = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full bg-gradient-to-r from-amber-400 to-yellow-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ${
+                  className={`w-full bg-gradient-to-r from-amber-400 to-yellow-500 text-gray-900 font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ${
                     isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                   }`}
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">
                       <svg
-                        className="animate-spin h-5 w-5 text-white"
+                        className="animate-spin h-5 w-5 text-gray-900"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
