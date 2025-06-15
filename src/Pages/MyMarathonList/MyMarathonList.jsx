@@ -1,23 +1,15 @@
-import React, { useContext, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { FaEdit, FaTrash, FaTimes, FaSpinner, FaRunning, FaCalendarAlt, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Datepicker from "../../Components/DatePicker/Datepicker";
 
 const MyMarathonList = () => {
-  const marathons = useLoaderData();
   const { user } = useContext(AuthContext);
-
-  // State for search term
+  const [marathons, setMarathons] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-
-  // Filter marathons to only show those created by the current user and match search term
-  const myMarathons = marathons
-    .filter((marathon) => marathon.userEmail === user.email)
-    .filter((marathon) => 
-      marathon.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
   // State for modals
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -36,6 +28,42 @@ const MyMarathonList = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errors, setErrors] = useState({});
+
+  // Fetch marathons on component mount or when user changes
+  useEffect(() => {
+    const fetchMarathons = async () => {
+      try {
+        if (!user?.email) return;
+        
+        setLoading(true);
+        const response = await fetch(`https://stridez-server.vercel.app/MyMarathon/${user.email}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch marathons');
+        }
+        
+        const data = await response.json();
+        setMarathons(data);
+      } catch (err) {
+        setError(err.message);
+        Swal.fire({
+          title: "Error!",
+          text: err.message || "Failed to load marathons",
+          icon: "error",
+          confirmButtonColor: "#F59E0B",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMarathons();
+  }, [user?.email]);
+
+  // Filter marathons based on search term
+  const filteredMarathons = marathons.filter(marathon => 
+    marathon.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Handle search input change
   const handleSearchChange = (e) => {
@@ -130,10 +158,13 @@ const MyMarathonList = () => {
         icon: "success",
         confirmButtonColor: "#F59E0B",
       });
+      
+      // Refresh the marathon list
+      const updatedResponse = await fetch(`https://stridez-server.vercel.app/MyMarathon/${user.email}`);
+      const updatedData = await updatedResponse.json();
+      setMarathons(updatedData);
+      
       setShowUpdateModal(false);
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     } catch (error) {
       Swal.fire({
         title: "Error!",
@@ -165,10 +196,13 @@ const MyMarathonList = () => {
         icon: "success",
         confirmButtonColor: "#F59E0B",
       });
+      
+      // Refresh the marathon list
+      const updatedResponse = await fetch(`https://stridez-server.vercel.app/MyMarathon/${user.email}`);
+      const updatedData = await updatedResponse.json();
+      setMarathons(updatedData);
+      
       setShowDeleteModal(false);
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     } catch (error) {
       Swal.fire({
         title: "Error!",
@@ -189,8 +223,24 @@ const MyMarathonList = () => {
     setErrors({});
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <FaSpinner className="animate-spin text-4xl text-yellow-500" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-500 text-lg">{error}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">
@@ -225,7 +275,7 @@ const MyMarathonList = () => {
           </div>
         </div>
 
-        {myMarathons.length === 0 ? (
+        {filteredMarathons.length === 0 ? (
           <div className="bg-white rounded-xl shadow-md p-8 text-center">
             <p className="text-gray-600">
               {searchTerm 
@@ -268,13 +318,11 @@ const MyMarathonList = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {myMarathons.map((marathon) => (
+                  {filteredMarathons.map((marathon) => (
                     <tr key={marathon._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{marathon.title}</div>
-                          </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">{marathon.title}</div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

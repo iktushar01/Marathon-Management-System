@@ -73,7 +73,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <AddMarathon /> },
       { path: "add-marathon", element: <AddMarathon /> },
-      { path: "my-marathons", element: <MyMarathonList /> , loader: () => fetch("https://stridez-server.vercel.app/marathons"), },
+      { path: "my-marathons", element: <MyMarathonList /> },
       { path: "my-applies", element: <MyApplyList />, loader: () => fetch("https://stridez-server.vercel.app/registrations"), },
     ],
   },
