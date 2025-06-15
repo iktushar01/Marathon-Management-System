@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { FaEdit, FaTrash, FaTimes, FaSpinner, FaRunning, FaCalendarAlt, FaUser, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
+import Loading from "../../Shared/Loading/Loading";
 
 const MyApplyList = () => {
   const { user } = useContext(AuthContext);
@@ -193,14 +194,7 @@ const MyApplyList = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-yellow-500 mb-4 mx-auto" />
-          <p className="text-gray-600">Loading your registrations...</p>
-        </div>
-      </div>
-    );
+    return <Loading/>
   }
 
   return (

@@ -3,9 +3,12 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import { FaEdit, FaTrash, FaTimes, FaSpinner, FaRunning, FaCalendarAlt, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Datepicker from "../../Components/DatePicker/Datepicker";
+import Loading from "../../Shared/Loading/Loading";
 
 const MyMarathonList = () => {
   const { user } = useContext(AuthContext);
+
+  console.log(user.accessToken)
   const [marathons, setMarathons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -224,11 +227,7 @@ const MyMarathonList = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <FaSpinner className="animate-spin text-4xl text-yellow-500" />
-      </div>
-    );
+    return <Loading/>
   }
 
   if (error) {
