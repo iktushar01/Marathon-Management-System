@@ -1,24 +1,13 @@
-import React, { useContext, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { FaEdit, FaTrash, FaTimes, FaSpinner, FaRunning, FaCalendarAlt, FaUser, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 const MyApplyList = () => {
-  const registrations = useLoaderData();
   const { user } = useContext(AuthContext);
-
-  // State for search term
+  const [registrations, setRegistrations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
-  // Filter registrations to only show those by the current user and match search term
-  const myRegistrations = registrations
-    .filter((registration) => registration.userEmail === user.email)
-    .filter((registration) => 
-      registration.marathonTitle.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-  // State for modals
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRegistration, setSelectedRegistration] = useState(null);
@@ -31,6 +20,40 @@ const MyApplyList = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errors, setErrors] = useState({});
+
+  // Fetch registrations on component mount and when user changes
+  useEffect(() => {
+    const fetchRegistrations = async () => {
+      try {
+        setLoading(true);
+        if (!user?.email) return;
+        
+        const response = await fetch(`https://stridez-server.vercel.app/myRegistrations/${user.email}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch registrations');
+        }
+        const data = await response.json();
+        setRegistrations(data);
+      } catch (error) {
+        console.error("Error fetching registrations:", error);
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to load your registrations",
+          icon: "error",
+          confirmButtonColor: "#F59E0B",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRegistrations();
+  }, [user?.email]);
+
+  // Filter registrations based on search term
+  const filteredRegistrations = registrations.filter((registration) => 
+    registration.marathonTitle.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Handle search input change
   const handleSearchChange = (e) => {
@@ -101,6 +124,12 @@ const MyApplyList = () => {
         throw new Error('Failed to update registration');
       }
 
+      // Update local state
+      const updatedRegistrations = registrations.map(reg => 
+        reg._id === selectedRegistration._id ? { ...reg, ...formData } : reg
+      );
+      setRegistrations(updatedRegistrations);
+
       Swal.fire({
         title: "Success!",
         text: "Registration updated successfully",
@@ -108,9 +137,6 @@ const MyApplyList = () => {
         confirmButtonColor: "#F59E0B",
       });
       setShowUpdateModal(false);
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     } catch (error) {
       Swal.fire({
         title: "Error!",
@@ -136,6 +162,9 @@ const MyApplyList = () => {
         throw new Error('Failed to delete registration');
       }
 
+      // Update local state
+      setRegistrations(registrations.filter(reg => reg._id !== selectedRegistration._id));
+
       Swal.fire({
         title: "Success!",
         text: "Registration deleted successfully",
@@ -143,9 +172,6 @@ const MyApplyList = () => {
         confirmButtonColor: "#F59E0B",
       });
       setShowDeleteModal(false);
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     } catch (error) {
       Swal.fire({
         title: "Error!",
@@ -166,8 +192,19 @@ const MyApplyList = () => {
     setErrors({});
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <FaSpinner className="animate-spin text-4xl text-yellow-500 mb-4 mx-auto" />
+          <p className="text-gray-600">Loading your registrations...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-900">
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">
@@ -202,7 +239,7 @@ const MyApplyList = () => {
           </div>
         </div>
 
-        {myRegistrations.length === 0 ? (
+        {filteredRegistrations.length === 0 ? (
           <div className="bg-white rounded-xl shadow-md p-8 text-center">
             <p className="text-gray-600">
               {searchTerm 
@@ -212,7 +249,7 @@ const MyApplyList = () => {
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
-                className="mt-4 text-yellow-500 hover:text-yellow-600 font-medium"
+                className="mt-4 text-yellow-600 hover:text-yellow-700 font-medium"
               >
                 Clear search
               </button>
@@ -222,27 +259,27 @@ const MyApplyList = () => {
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-900">
+                <thead className="bg-gray-800">
                   <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                       Marathon
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                       Date
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                       Participant
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                       Contact
                     </th>
-                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-100 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {myRegistrations.map((registration) => (
+                  {filteredRegistrations.map((registration) => (
                     <tr key={registration._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">{registration.marathonTitle}</div>
@@ -270,13 +307,13 @@ const MyApplyList = () => {
                         <div className="flex justify-end space-x-2">
                           <button
                             onClick={() => handleUpdateClick(registration)}
-                            className="text-blue-600 hover:text-blue-900 flex items-center"
+                            className="text-blue-600 hover:text-blue-800 flex items-center"
                           >
                             <FaEdit className="mr-1" /> Edit
                           </button>
                           <button
                             onClick={() => handleDeleteClick(registration)}
-                            className="text-red-600 hover:text-red-900 flex items-center"
+                            className="text-red-600 hover:text-red-800 flex items-center"
                           >
                             <FaTrash className="mr-1" /> Delete
                           </button>
@@ -292,7 +329,7 @@ const MyApplyList = () => {
 
         {/* Update Modal */}
         {showUpdateModal && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
@@ -380,7 +417,7 @@ const MyApplyList = () => {
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 flex items-center gap-2"
+                      className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 flex items-center gap-2"
                       disabled={isUpdating}
                     >
                       {isUpdating ? (
@@ -402,7 +439,7 @@ const MyApplyList = () => {
 
         {/* Delete Confirmation Modal */}
         {showDeleteModal && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-xl shadow-lg w-full max-w-md">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
@@ -416,8 +453,8 @@ const MyApplyList = () => {
                 </div>
                 
                 <p className="mb-6 text-gray-600">
-                  Are you sure you want to delete your registration for <strong className="text-red-500">"{selectedRegistration?.marathonTitle}"</strong>?
-                  This action will permanently remove your registration data.
+                  Are you sure you want to delete your registration for <strong className="text-red-600">"{selectedRegistration?.marathonTitle}"</strong>?
+                  This action cannot be undone.
                 </p>
 
                 <div className="flex justify-end gap-3">
@@ -432,7 +469,7 @@ const MyApplyList = () => {
                   <button
                     type="button"
                     onClick={handleDeleteConfirm}
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center gap-2"
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2"
                     disabled={isDeleting}
                   >
                     {isDeleting ? (
