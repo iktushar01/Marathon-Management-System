@@ -1,15 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
-import {
-  FaEdit,
-  FaTrash,
-  FaTimes,
-  FaSpinner,
-  FaRunning,
-  FaCalendarAlt,
-  FaUser,
-  FaSearch,
-} from "react-icons/fa";
+import { FaEdit, FaTrash, FaTimes, FaSpinner, FaRunning, FaCalendarAlt, FaUser, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Loading from "../../Shared/Loading/Loading";
 
@@ -17,15 +8,16 @@ const MyApplyList = () => {
   const { user } = useContext(AuthContext);
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRegistration, setSelectedRegistration] = useState(null);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    contactNumber: "",
-    additionalInfo: "",
+    firstName: '',
+    lastName: '',
+    contactNumber: '',
+    additionalInfo: ''
   });
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -36,24 +28,18 @@ const MyApplyList = () => {
     const fetchRegistrations = async () => {
       try {
         setLoading(true);
+        setError(null);
         if (!user?.email) return;
-
-        const response = await fetch(
-          `https://stridez-server.vercel.app/myRegistrations/${user.email}`
-        );
+        
+        const response = await fetch(`https://stridez-server.vercel.app/myRegistrations/${user.email}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch registrations");
+          throw new Error('Failed to fetch registrations');
         }
         const data = await response.json();
-        setRegistrations(data);
+        setRegistrations(data || []);
       } catch (error) {
+        setError(error.message);
         console.error("Error fetching registrations:", error);
-        Swal.fire({
-          title: "Error!",
-          text: "Failed to load your registrations",
-          icon: "error",
-          confirmButtonColor: "#F59E0B",
-        });
       } finally {
         setLoading(false);
       }
@@ -63,7 +49,7 @@ const MyApplyList = () => {
   }, [user?.email]);
 
   // Filter registrations based on search term
-  const filteredRegistrations = registrations.filter((registration) =>
+  const filteredRegistrations = registrations.filter((registration) => 
     registration.marathonTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -79,7 +65,7 @@ const MyApplyList = () => {
       firstName: registration.firstName,
       lastName: registration.lastName,
       contactNumber: registration.contactNumber,
-      additionalInfo: registration.additionalInfo || "",
+      additionalInfo: registration.additionalInfo || ''
     });
     setShowUpdateModal(true);
     setErrors({});
@@ -94,9 +80,9 @@ const MyApplyList = () => {
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -124,23 +110,20 @@ const MyApplyList = () => {
     setIsUpdating(true);
 
     try {
-      const response = await fetch(
-        `https://stridez-server.vercel.app/registrations/${selectedRegistration._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`https://stridez-server.vercel.app/registrations/${selectedRegistration._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to update registration");
+        throw new Error('Failed to update registration');
       }
 
       // Update local state
-      const updatedRegistrations = registrations.map((reg) =>
+      const updatedRegistrations = registrations.map(reg => 
         reg._id === selectedRegistration._id ? { ...reg, ...formData } : reg
       );
       setRegistrations(updatedRegistrations);
@@ -169,21 +152,16 @@ const MyApplyList = () => {
     setIsDeleting(true);
 
     try {
-      const response = await fetch(
-        `https://stridez-server.vercel.app/registrations/${selectedRegistration._id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`https://stridez-server.vercel.app/registrations/${selectedRegistration._id}`, {
+        method: 'DELETE',
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to delete registration");
+        throw new Error('Failed to delete registration');
       }
 
       // Update local state
-      setRegistrations(
-        registrations.filter((reg) => reg._id !== selectedRegistration._id)
-      );
+      setRegistrations(registrations.filter(reg => reg._id !== selectedRegistration._id));
 
       Swal.fire({
         title: "Success!",
@@ -213,11 +191,30 @@ const MyApplyList = () => {
   };
 
   if (loading) {
-    return <Loading />;
+    return <Loading/>;
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-md p-8 text-center max-w-md">
+          <p className="text-red-500 text-lg mb-4">Something went wrong</p>
+          <p className="text-gray-600 mb-4">
+            We couldn't load your registrations. Please try again later.
+          </p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">
@@ -252,66 +249,47 @@ const MyApplyList = () => {
           </div>
         </div>
 
-        {filteredRegistrations.length === 0 && !searchTerm ? (
-          <div className="flex items-center justify-center">
-            <div className="bg-white rounded-xl shadow-md p-8 text-center max-w-md">
-              <p className="text-gray-600 mb-4">
-                You haven't registered for any marathons yet.
-              </p>
-              <button
-                onClick={() => window.location.reload()}
-                className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
-              >
-                Refresh Page
-              </button>
-            </div>
-          </div>
-        ) : filteredRegistrations.length === 0 && searchTerm ? (
+        {filteredRegistrations.length === 0 ? (
           <div className="bg-white rounded-xl shadow-md p-8 text-center">
-            <p className="text-gray-600">
-              No registrations found for "{searchTerm}"
-            </p>
-            <button
-              onClick={() => setSearchTerm("")}
-              className="mt-4 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
-            >
-              Clear search
-            </button>
+            <div className="text-gray-600 mb-4">
+              <FaRunning className="mx-auto text-4xl text-yellow-400 mb-3" />
+              {searchTerm 
+                ? `No registrations found for "${searchTerm}"`
+                : "You haven't registered for any marathons yet."}
+            </div>
+            {!searchTerm && (
+              <p className="text-gray-500 mb-4">
+                Find exciting marathons to participate in!
+              </p>
+            )}
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="mt-4 px-4 py-2 text-yellow-500 hover:text-yellow-600 font-medium border border-yellow-500 rounded-lg"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-800">
+                <thead className="bg-gray-900">
                   <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-                    >
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
                       Marathon
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-                    >
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
                       Date
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-                    >
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
                       Participant
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-                    >
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider">
                       Contact
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider"
-                    >
+                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-100 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
@@ -320,9 +298,7 @@ const MyApplyList = () => {
                   {filteredRegistrations.map((registration) => (
                     <tr key={registration._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {registration.marathonTitle}
-                        </div>
+                        <div className="text-sm font-medium text-gray-900">{registration.marathonTitle}</div>
                         <div className="text-sm text-gray-500 flex items-center mt-1">
                           <FaRunning className="mr-1 text-yellow-500" />
                           {registration.marathonDistance}
@@ -331,9 +307,7 @@ const MyApplyList = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900 flex items-center">
                           <FaCalendarAlt className="mr-1 text-yellow-500" />
-                          {new Date(
-                            registration.marathonStartDate
-                          ).toLocaleDateString()}
+                          {new Date(registration.marathonStartDate).toLocaleDateString()}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -343,9 +317,7 @@ const MyApplyList = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
-                          {registration.contactNumber}
-                        </div>
+                        <div className="text-sm text-gray-900">{registration.contactNumber}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex justify-end space-x-2">
@@ -373,49 +345,39 @@ const MyApplyList = () => {
 
         {/* Update Modal */}
         {showUpdateModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    Update Registration
-                  </h2>
-                  <button
+                  <h2 className="text-2xl font-bold text-gray-800">Update Registration</h2>
+                  <button 
                     onClick={handleCloseModal}
                     className="text-gray-500 hover:text-gray-700"
                   >
                     <FaTimes size={20} />
                   </button>
                 </div>
-
+                
                 <form onSubmit={handleUpdateSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        First Name
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                       <input
                         type="text"
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
                         className={`w-full px-4 py-2 rounded-lg border ${
-                          errors.firstName
-                            ? "border-red-500"
-                            : "border-gray-300"
+                          errors.firstName ? "border-red-500" : "border-gray-300"
                         } focus:ring-2 focus:ring-yellow-500 focus:border-transparent`}
                       />
                       {errors.firstName && (
-                        <p className="mt-1 text-sm text-red-600">
-                          {errors.firstName}
-                        </p>
+                        <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
                       )}
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Last Name
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
                       <input
                         type="text"
                         name="lastName"
@@ -426,40 +388,30 @@ const MyApplyList = () => {
                         } focus:ring-2 focus:ring-yellow-500 focus:border-transparent`}
                       />
                       {errors.lastName && (
-                        <p className="mt-1 text-sm text-red-600">
-                          {errors.lastName}
-                        </p>
+                        <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
                       )}
                     </div>
                   </div>
 
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Contact Number
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
                     <input
                       type="tel"
                       name="contactNumber"
                       value={formData.contactNumber}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-2 rounded-lg border ${
-                        errors.contactNumber
-                          ? "border-red-500"
-                          : "border-gray-300"
+                        errors.contactNumber ? "border-red-500" : "border-gray-300"
                       } focus:ring-2 focus:ring-yellow-500 focus:border-transparent`}
                       placeholder="10-15 digit phone number"
                     />
                     {errors.contactNumber && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.contactNumber}
-                      </p>
+                      <p className="mt-1 text-sm text-red-600">{errors.contactNumber}</p>
                     )}
                   </div>
 
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Additional Information
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Additional Information</label>
                     <textarea
                       name="additionalInfo"
                       rows="4"
@@ -481,7 +433,7 @@ const MyApplyList = () => {
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 flex items-center gap-2"
+                      className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 flex items-center gap-2"
                       disabled={isUpdating}
                     >
                       {isUpdating ? (
@@ -503,27 +455,22 @@ const MyApplyList = () => {
 
         {/* Delete Confirmation Modal */}
         {showDeleteModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-xl shadow-lg w-full max-w-md">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    Confirm Deletion
-                  </h2>
-                  <button
+                  <h2 className="text-2xl font-bold text-gray-800">Confirm Deletion</h2>
+                  <button 
                     onClick={handleCloseModal}
                     className="text-gray-500 hover:text-gray-700"
                   >
                     <FaTimes size={20} />
                   </button>
                 </div>
-
+                
                 <p className="mb-6 text-gray-600">
-                  Are you sure you want to delete your registration for{" "}
-                  <strong className="text-red-600">
-                    "{selectedRegistration?.marathonTitle}"
-                  </strong>
-                  ? This action cannot be undone.
+                  Are you sure you want to delete your registration for <strong className="text-red-500">"{selectedRegistration?.marathonTitle}"</strong>?
+                  This action cannot be undone.
                 </p>
 
                 <div className="flex justify-end gap-3">
@@ -538,7 +485,7 @@ const MyApplyList = () => {
                   <button
                     type="button"
                     onClick={handleDeleteConfirm}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2"
+                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center gap-2"
                     disabled={isDeleting}
                   >
                     {isDeleting ? (
