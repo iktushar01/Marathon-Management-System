@@ -33,7 +33,7 @@ const router = createBrowserRouter([
       },
       {
         path: "marathons",
-        element: <Marathons />,
+        element: <PrivateRoutes><Marathons /></PrivateRoutes>,
         loader: () => fetch("https://stridez-server.vercel.app/marathons"),
       },
       {

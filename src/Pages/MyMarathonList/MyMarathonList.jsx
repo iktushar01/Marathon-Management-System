@@ -38,19 +38,18 @@ const MyMarathonList = () => {
         if (!user?.email) return;
         
         setLoading(true);
+        setError(null); // Reset error state before new fetch
         const response = await fetch(`https://stridez-server.vercel.app/MyMarathon/${user.email}`);
-      
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch marathons');
+        }
         
         const data = await response.json();
-        setMarathons(data);
+        setMarathons(data || []); // Ensure we always have an array
       } catch (err) {
         setError(err.message);
-        Swal.fire({
-          title: "Error!",
-          text: err.message || "Failed to load marathons",
-          icon: "error",
-          confirmButtonColor: "#F59E0B",
-        });
+        console.error("Error fetching marathons:", err);
       } finally {
         setLoading(false);
       }
@@ -161,7 +160,7 @@ const MyMarathonList = () => {
       // Refresh the marathon list
       const updatedResponse = await fetch(`https://stridez-server.vercel.app/MyMarathon/${user.email}`);
       const updatedData = await updatedResponse.json();
-      setMarathons(updatedData);
+      setMarathons(updatedData || []);
       
       setShowUpdateModal(false);
     } catch (error) {
@@ -199,7 +198,7 @@ const MyMarathonList = () => {
       // Refresh the marathon list
       const updatedResponse = await fetch(`https://stridez-server.vercel.app/MyMarathon/${user.email}`);
       const updatedData = await updatedResponse.json();
-      setMarathons(updatedData);
+      setMarathons(updatedData || []);
       
       setShowDeleteModal(false);
     } catch (error) {
@@ -223,13 +222,24 @@ const MyMarathonList = () => {
   };
 
   if (loading) {
-    return <Loading/>
+    return <Loading/>;
   }
 
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-500 text-lg">{error}</p>
+        <div className="bg-white rounded-xl shadow-md p-8 text-center max-w-md">
+          <p className="text-red-500 text-lg mb-4">Something went wrong</p>
+          <p className="text-gray-600 mb-4">
+            We couldn't load your marathons. Please try again later.
+          </p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -272,15 +282,21 @@ const MyMarathonList = () => {
 
         {filteredMarathons.length === 0 ? (
           <div className="bg-white rounded-xl shadow-md p-8 text-center">
-            <p className="text-gray-600">
+            <div className="text-gray-600 mb-4">
+              <FaRunning className="mx-auto text-4xl text-yellow-400 mb-3" />
               {searchTerm 
                 ? `No marathons found for "${searchTerm}"`
                 : "You haven't created any marathons yet."}
-            </p>
+            </div>
+            {!searchTerm && (
+              <p className="text-gray-500 mb-4">
+                Get started by creating your first marathon!
+              </p>
+            )}
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
-                className="mt-4 text-yellow-500 hover:text-yellow-600 font-medium"
+                className="mt-4 px-4 py-2 text-yellow-500 hover:text-yellow-600 font-medium border border-yellow-500 rounded-lg"
               >
                 Clear search
               </button>
