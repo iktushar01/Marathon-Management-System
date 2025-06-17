@@ -7,6 +7,7 @@ import UpcomingMarathon from "./UpcomingMarathon";
 import DownloadablesSection from "./DownloadablesSection";
 import SponsorShowcase from "./SponsorShowcase";
 import MarathonFAQs from "./MarathonFAQs";
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   const allMarathons = useLoaderData();
@@ -77,7 +78,11 @@ const Home = () => {
   };
 
   return (
+    
     <div className="bg-gray-900">
+      <Helmet>
+        <title>Home | MySite</title>
+      </Helmet>
       <BannerSlider></BannerSlider>
       <div className="container mx-auto ">
         <div className="text-center text-yellow-400 py-8">
