@@ -252,36 +252,31 @@ const MyApplyList = () => {
           </div>
         </div>
 
-        {filteredRegistrations.length === 0 ? (
+        {filteredRegistrations.length === 0 && !searchTerm ? (
           <div className="flex items-center justify-center">
             <div className="bg-white rounded-xl shadow-md p-8 text-center max-w-md">
-              {searchTerm ? (
-                <>
-                  <p className="text-red-500 text-lg mb-4">No results found</p>
-                  <p className="text-gray-600 mb-4">
-                    We couldn't find any registrations matching "{searchTerm}"
-                  </p>
-                  <button
-                    onClick={() => setSearchTerm("")}
-                    className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
-                  >
-                    Clear Search
-                  </button>
-                </>
-              ) : (
-                <>
-                  <p className="text-gray-600 mb-4">
-                    You haven't registered for any marathons yet.
-                  </p>
-                  <button
-                    onClick={() => window.location.reload()}
-                    className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
-                  >
-                    Refresh Page
-                  </button>
-                </>
-              )}
+              <p className="text-gray-600 mb-4">
+                You haven't registered for any marathons yet.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+              >
+                Refresh Page
+              </button>
             </div>
+          </div>
+        ) : filteredRegistrations.length === 0 && searchTerm ? (
+          <div className="bg-white rounded-xl shadow-md p-8 text-center">
+            <p className="text-gray-600">
+              No registrations found for "{searchTerm}"
+            </p>
+            <button
+              onClick={() => setSearchTerm("")}
+              className="mt-4 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+            >
+              Clear search
+            </button>
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
