@@ -227,7 +227,7 @@ const MyMarathonList = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className=" flex items-center justify-center">
         <div className="bg-white rounded-xl shadow-md p-8 text-center max-w-md">
           <p className="text-red-500 text-lg mb-4">Something went wrong</p>
           <p className="text-gray-600 mb-4">
