@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-        loader: () => fetch("https://stridez-server.vercel.app/marathons"),
+        loader: () => fetch("https://stridez-server.vercel.app/marathons/home"),
       },
       {
         path:"/profileinfo",
