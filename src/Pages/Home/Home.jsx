@@ -81,7 +81,7 @@ const Home = () => {
     
     <div className="bg-gray-900">
       <Helmet>
-        <title>Home | MySite</title>
+        <title>Home | stridez</title>
       </Helmet>
       <BannerSlider></BannerSlider>
       <div className="container mx-auto ">
