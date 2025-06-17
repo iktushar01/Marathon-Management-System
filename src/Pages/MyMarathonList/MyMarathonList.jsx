@@ -8,7 +8,6 @@ import Loading from "../../Shared/Loading/Loading";
 const MyMarathonList = () => {
   const { user } = useContext(AuthContext);
 
-  console.log(user.accessToken)
   const [marathons, setMarathons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,10 +39,7 @@ const MyMarathonList = () => {
         
         setLoading(true);
         const response = await fetch(`https://stridez-server.vercel.app/MyMarathon/${user.email}`);
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch marathons');
-        }
+      
         
         const data = await response.json();
         setMarathons(data);
