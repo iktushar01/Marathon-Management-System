@@ -3,7 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContext";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 import { motion } from "framer-motion";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
@@ -25,10 +26,10 @@ const Register = () => {
     createUser(email, password)
       .then((result) => {
         Swal.fire({
-          title: 'Success!',
-          text: 'Account created successfully',
-          icon: 'success',
-          confirmButtonText: 'Continue',
+          title: "Success!",
+          text: "Account created successfully",
+          icon: "success",
+          confirmButtonText: "Continue",
           timer: 2000,
           timerProgressBar: true,
         }).then(() => {
@@ -36,22 +37,22 @@ const Register = () => {
         });
       })
       .catch((error) => {
-        let errorMessage = 'Registration failed. Please try again.';
-        
+        let errorMessage = "Registration failed. Please try again.";
+
         // Handle specific Firebase errors
-        if (error.code === 'auth/email-already-in-use') {
-          errorMessage = 'This email is already registered.';
-        } else if (error.code === 'auth/weak-password') {
-          errorMessage = 'Password should be at least 6 characters.';
-        } else if (error.code === 'auth/invalid-email') {
-          errorMessage = 'Please enter a valid email address.';
+        if (error.code === "auth/email-already-in-use") {
+          errorMessage = "This email is already registered.";
+        } else if (error.code === "auth/weak-password") {
+          errorMessage = "Password should be at least 6 characters.";
+        } else if (error.code === "auth/invalid-email") {
+          errorMessage = "Please enter a valid email address.";
         }
 
         Swal.fire({
-          title: 'Registration Error',
+          title: "Registration Error",
           text: errorMessage,
-          icon: 'error',
-          confirmButtonText: 'Try Again',
+          icon: "error",
+          confirmButtonText: "Try Again",
         });
       });
   };
@@ -64,6 +65,9 @@ const Register = () => {
       transition={{ duration: 0.5 }}
       className="min-h-screen flex flex-col md:flex-row"
     >
+      <Helmet>
+        <title>Register | stridez</title>
+      </Helmet>
       {/* Left Side with Background Video */}
       <motion.div
         initial={{ x: -100, opacity: 0 }}

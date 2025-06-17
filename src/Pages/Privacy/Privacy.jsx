@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FiShield, FiLock, FiEyeOff, FiUserCheck } from 'react-icons/fi';
+import { Helmet } from 'react-helmet';
 
 const Privacy = () => {
   const privacyPoints = [
@@ -28,6 +29,9 @@ const Privacy = () => {
 
   return (
     <div className="bg-gray-900 text-gray-100">
+      <Helmet>
+        <title>Privacy | stridez</title>
+      </Helmet>
         {/* Hero Section */}
       <div
         className="relative h-64 md:h-64 flex items-center justify-center pt-18 md:pt-16 bg-cover bg-center bg-no-repeat"

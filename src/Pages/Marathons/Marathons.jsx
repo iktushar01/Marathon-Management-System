@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import MarathonsCard from "./MarathonsCard";
+import { Helmet } from "react-helmet";
 
 const Marathons = () => {
   const initialMarathons = useLoaderData();
   const [marathons, setMarathons] = useState(initialMarathons);
   const [sortConfig, setSortConfig] = useState({
     field: "createdAt",
-    order: "desc"
+    order: "desc",
   });
 
   const handleSortChange = async (field, order) => {
@@ -25,6 +26,9 @@ const Marathons = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
+      <Helmet>
+        <title> Marathon | stridez</title>
+      </Helmet>
       {/* Hero Section */}
       <div
         className="relative h-64 md:h-64 flex items-center justify-center pt-18 md:pt-16 bg-cover bg-center bg-no-repeat"
@@ -54,7 +58,7 @@ const Marathons = () => {
             <option value="marathonStartDate">Marathon Date</option>
           </select>
         </div>
-        
+
         <div className="flex items-center space-x-2">
           <span className="text-white">Order:</span>
           <select

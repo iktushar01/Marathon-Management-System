@@ -4,6 +4,7 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 import { motion } from "framer-motion";
 import Swal from 'sweetalert2';
+import { Helmet } from "react-helmet";
 
 const SignIn = () => {
   const { signInUser } = useContext(AuthContext);
@@ -69,6 +70,9 @@ const SignIn = () => {
       exit={{ opacity: 0 }}
       className="min-h-screen flex flex-col md:flex-row"
     >
+            <Helmet>
+        <title>Sign In | stridez</title>
+      </Helmet>
       {/* Left Side with Background Video */}
       <motion.div
         initial={{ x: -100 }}

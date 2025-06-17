@@ -3,6 +3,7 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import { FaEdit, FaTrash, FaTimes, FaSpinner, FaRunning, FaCalendarAlt, FaUser, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Loading from "../../Shared/Loading/Loading";
+import { Helmet } from "react-helmet";
 
 const MyApplyList = () => {
   const { user } = useContext(AuthContext);
@@ -215,6 +216,9 @@ const MyApplyList = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>My Apply List | stridez</title>
+      </Helmet>
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">

@@ -11,6 +11,7 @@ import {
   FiImage,
 } from "react-icons/fi";
 import { AuthContext } from "../../Contexts/AuthContext";
+import { Helmet } from "react-helmet";
 
 const AddMarathon = () => {
   const { user } = useContext(AuthContext);
@@ -136,6 +137,9 @@ const AddMarathon = () => {
 
   return (
     <div className="min-h-screen ">
+      <Helmet>
+        <title>AddMarathon | stridez</title>
+      </Helmet>
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
