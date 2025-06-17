@@ -6,7 +6,7 @@ const files = [
   {
     id: 1,
     name: "Beginner Training Plan",
-    url: "/public/pdfs/Nike-Run-Club-Marathon-Training-Plan-Audio-Guided-Runs_compressed.pdf",
+    url: "/pdfs/Nike-Run-Club-Marathon-Training-Plan-Audio-Guided-Runs_compressed.pdf",
     type: "pdf",
     size: "1.2 MB",
     preview: "12-week plan with audio-guided runs for beginners",
@@ -15,7 +15,7 @@ const files = [
   {
     id: 2,
     name: "Marathon Nutrition Guide",
-    url: "/public/pdfs/Marathon_Nutrition_Guide_compressed.pdf",
+    url: "/pdfs/Marathon_Nutrition_Guide_compressed.pdf",
     type: "pdf",
     size: "980 KB",
     preview: "Complete fueling guide for before/during/after race",
@@ -24,7 +24,7 @@ const files = [
   {
     id: 3,
     name: "Marathon Gadget Guide",
-    url: "/public/pdfs/Tech_Tools_Guide_Marathon_2025_compressed.pdf",
+    url: "/pdfs/Tech_Tools_Guide_Marathon_2025_compressed.pdf",
     type: "pdf",
     size: "650 KB",
     preview: "Latest tech tools to enhance marathon performance",
