@@ -49,7 +49,7 @@ A full-stack web application designed to streamline the organization and partici
 
 # 📦 Project Dependencies
 
-A list of all dependencies used in this project with links to their respective npm pages..
+A list of all dependencies used in this project with links to their respective npm pages.
 
 ## 🔧 Dependencies
 
