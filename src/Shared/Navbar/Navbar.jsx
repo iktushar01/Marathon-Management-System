@@ -15,7 +15,7 @@ const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const toggleMenu = useCallback(() => setIsOpen(prev => !prev), []);
+  const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
   const closeMenu = useCallback(() => setIsOpen(false), []);
 
   // Hide navbar on scroll down
@@ -34,10 +34,15 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  const underlineHover = "relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-yellow-500 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100";
+  const underlineHover =
+    "relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-yellow-500 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100";
 
-  const navLinkClasses = (isActive) => 
-    `${isActive ? "text-yellow-400 font-semibold" : "text-white hover:text-yellow-500"} ${underlineHover} transition-colors duration-200 px-2 py-1 rounded-md`;
+  const navLinkClasses = (isActive) =>
+    `${
+      isActive
+        ? "text-yellow-400 font-semibold"
+        : "text-white hover:text-yellow-500"
+    } ${underlineHover} transition-colors duration-200 px-2 py-1 rounded-md`;
 
   const createNavLink = (to, text, isButton = false) => {
     if (isButton) {
@@ -50,8 +55,8 @@ const Navbar = () => {
       );
     }
     return (
-      <NavLink 
-        to={to} 
+      <NavLink
+        to={to}
         className={({ isActive }) => navLinkClasses(isActive)}
         onClick={closeMenu}
       >
@@ -64,6 +69,8 @@ const Navbar = () => {
     <>
       {createNavLink("/", "Home")}
       {createNavLink("/marathons", "Marathons")}
+      {createNavLink("/privacy", "Privacy")}
+      {createNavLink("/terms", "terms")}
       {user ? (
         <>
           {createNavLink("/dashboard", "Dashboard")}
@@ -90,7 +97,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex justify-between items-center px-4 py-3">
         <Logo />
-        
+
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex gap-8 items-center text-lg font-medium">
           {navLinks}

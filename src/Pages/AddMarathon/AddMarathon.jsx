@@ -16,19 +16,21 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 // Custom date input component
-const CustomDateInput = forwardRef(({ value, onClick, placeholder, error }, ref) => (
-  <button
-    type="button"
-    className={`w-full px-4 py-3 text-left rounded-lg bg-gray-700 text-gray-100 border ${
-      error ? "border-red-500" : "border-gray-600 hover:border-yellow-400"
-    } focus:border-yellow-400 focus:ring-2 focus:ring-amber-500 focus:outline-none flex items-center justify-between`}
-    onClick={onClick}
-    ref={ref}
-  >
-    {value || <span className="text-gray-400">{placeholder}</span>}
-    <FiCalendar className="text-amber-500" />
-  </button>
-));
+const CustomDateInput = forwardRef(
+  ({ value, onClick, placeholder, error }, ref) => (
+    <button
+      type="button"
+      className={`w-full px-4 py-3 text-left rounded-lg bg-gray-700 text-gray-100 border ${
+        error ? "border-red-500" : "border-gray-600 hover:border-yellow-400"
+      } focus:border-yellow-400 focus:ring-2 focus:ring-amber-500 focus:outline-none flex items-center justify-between`}
+      onClick={onClick}
+      ref={ref}
+    >
+      {value || <span className="text-gray-400">{placeholder}</span>}
+      <FiCalendar className="text-amber-500" />
+    </button>
+  )
+);
 
 CustomDateInput.displayName = "CustomDateInput";
 
@@ -46,11 +48,13 @@ const AddMarathon = () => {
     if (!formData.title) newErrors.title = "Title is required";
     if (!formData.location) newErrors.location = "Location is required";
     if (!formData.distance) newErrors.distance = "Distance is required";
-    if (!formData.description) newErrors.description = "Description is required";
+    if (!formData.description)
+      newErrors.description = "Description is required";
     if (!formData.image) newErrors.image = "Image URL is required";
     if (!startRegDate) newErrors.startRegDate = "Start date is required";
     if (!endRegDate) newErrors.endRegDate = "End date is required";
-    if (!marathonStartDate) newErrors.marathonStartDate = "Marathon date is required";
+    if (!marathonStartDate)
+      newErrors.marathonStartDate = "Marathon date is required";
 
     if (startRegDate && endRegDate && startRegDate > endRegDate) {
       newErrors.endRegDate = "End date must be after start date";
@@ -134,7 +138,7 @@ const AddMarathon = () => {
       <Helmet>
         <title>Add Marathon | Stridez</title>
       </Helmet>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -146,7 +150,8 @@ const AddMarathon = () => {
             Create Your Marathon Event
           </h1>
           <p className="text-gray-300 max-w-3xl mx-auto text-lg">
-            Fill out the details below to organize and launch your marathon event
+            Fill out the details below to organize and launch your marathon
+            event
           </p>
         </motion.div>
 
@@ -178,7 +183,9 @@ const AddMarathon = () => {
                       <FiCalendar className="text-amber-600 text-lg" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-100 text-lg">Date Selection</h3>
+                      <h3 className="font-medium text-gray-100 text-lg">
+                        Date Selection
+                      </h3>
                       <p className="text-gray-300">
                         Ensure registration dates are before the marathon date
                       </p>
@@ -189,7 +196,9 @@ const AddMarathon = () => {
                       <FiAward className="text-amber-600 text-lg" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-100 text-lg">Distance Options</h3>
+                      <h3 className="font-medium text-gray-100 text-lg">
+                        Distance Options
+                      </h3>
                       <p className="text-gray-300">
                         Provide clear distance options for participants
                       </p>
@@ -200,7 +209,9 @@ const AddMarathon = () => {
                       <FiImage className="text-amber-600 text-lg" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-100 text-lg">Event Image</h3>
+                      <h3 className="font-medium text-gray-100 text-lg">
+                        Event Image
+                      </h3>
                       <p className="text-gray-300">
                         Use high-quality images that represent your event
                       </p>
@@ -254,14 +265,21 @@ const AddMarathon = () => {
                     <DatePicker
                       selected={startRegDate}
                       onChange={(date) => setStartRegDate(date)}
-                      customInput={<CustomDateInput error={errors.startRegDate} placeholder="Select start date" />}
+                      customInput={
+                        <CustomDateInput
+                          error={errors.startRegDate}
+                          placeholder="Select start date"
+                        />
+                      }
                       minDate={new Date()}
                       selectsStart
                       startDate={startRegDate}
                       endDate={endRegDate}
                     />
                     {errors.startRegDate && (
-                      <p className="mt-2 text-sm text-red-400">{errors.startRegDate}</p>
+                      <p className="mt-2 text-sm text-red-400">
+                        {errors.startRegDate}
+                      </p>
                     )}
                   </div>
                   <div>
@@ -271,14 +289,21 @@ const AddMarathon = () => {
                     <DatePicker
                       selected={endRegDate}
                       onChange={(date) => setEndRegDate(date)}
-                      customInput={<CustomDateInput error={errors.endRegDate} placeholder="Select end date" />}
+                      customInput={
+                        <CustomDateInput
+                          error={errors.endRegDate}
+                          placeholder="Select end date"
+                        />
+                      }
                       minDate={startRegDate || new Date()}
                       selectsEnd
                       startDate={startRegDate}
                       endDate={endRegDate}
                     />
                     {errors.endRegDate && (
-                      <p className="mt-2 text-sm text-red-400">{errors.endRegDate}</p>
+                      <p className="mt-2 text-sm text-red-400">
+                        {errors.endRegDate}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -290,11 +315,18 @@ const AddMarathon = () => {
                   <DatePicker
                     selected={marathonStartDate}
                     onChange={(date) => setMarathonStartDate(date)}
-                    customInput={<CustomDateInput error={errors.marathonStartDate} placeholder="Select marathon date" />}
+                    customInput={
+                      <CustomDateInput
+                        error={errors.marathonStartDate}
+                        placeholder="Select marathon date"
+                      />
+                    }
                     minDate={endRegDate || new Date()}
                   />
                   {errors.marathonStartDate && (
-                    <p className="mt-2 text-sm text-red-400">{errors.marathonStartDate}</p>
+                    <p className="mt-2 text-sm text-red-400">
+                      {errors.marathonStartDate}
+                    </p>
                   )}
                 </div>
 
@@ -313,7 +345,9 @@ const AddMarathon = () => {
                     } focus:border-yellow-400 focus:ring-2 focus:ring-amber-500 focus:outline-none transition-colors`}
                   />
                   {errors.location && (
-                    <p className="mt-2 text-sm text-red-400">{errors.location}</p>
+                    <p className="mt-2 text-sm text-red-400">
+                      {errors.location}
+                    </p>
                   )}
                 </div>
 
@@ -331,7 +365,9 @@ const AddMarathon = () => {
                       } focus:border-yellow-400 focus:ring-2 focus:ring-amber-500 focus:outline-none appearance-none transition-colors`}
                       defaultValue=""
                     >
-                      <option value="" disabled>Select Running Distance</option>
+                      <option value="" disabled>
+                        Select Running Distance
+                      </option>
                       <option value="5k">5K</option>
                       <option value="10k">10K</option>
                       <option value="21k">Half Marathon (21K)</option>
@@ -342,7 +378,9 @@ const AddMarathon = () => {
                     </div>
                   </div>
                   {errors.distance && (
-                    <p className="mt-2 text-sm text-red-400">{errors.distance}</p>
+                    <p className="mt-2 text-sm text-red-400">
+                      {errors.distance}
+                    </p>
                   )}
                 </div>
 
@@ -361,7 +399,9 @@ const AddMarathon = () => {
                     } focus:border-yellow-400 focus:ring-2 focus:ring-amber-500 focus:outline-none transition-colors`}
                   ></textarea>
                   {errors.description && (
-                    <p className="mt-2 text-sm text-red-400">{errors.description}</p>
+                    <p className="mt-2 text-sm text-red-400">
+                      {errors.description}
+                    </p>
                   )}
                 </div>
 
