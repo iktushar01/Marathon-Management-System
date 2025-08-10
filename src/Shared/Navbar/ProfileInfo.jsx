@@ -27,9 +27,11 @@ const ProfileInfo = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px] text-white">
-        <CgSpinner className="animate-spin text-yellow-500 h-16 w-16" />
-        <p className="ml-4 text-lg">Loading profile data...</p>
+      <div className="flex flex-col justify-center items-center min-h-[400px] text-white">
+        <div className="flex items-center">
+          <CgSpinner className="animate-spin text-yellow-500 h-16 w-16" />
+          <p className="ml-4 text-lg">Loading profile data...</p>
+        </div>
       </div>
     );
   }
@@ -60,7 +62,7 @@ const ProfileInfo = () => {
         },
         {
           label: "Phone",
-          value: user?.phoneNumber || "N/A",
+          value: user?.phoneNumber || "Not provided",
           icon: <FaPhone className="mr-2 text-white" />,
         },
       ],
@@ -73,29 +75,29 @@ const ProfileInfo = () => {
           label: "Last Sign-in",
           value: user?.metadata?.lastSignInTime
             ? new Date(user.metadata.lastSignInTime).toLocaleString()
-            : "N/A",
+            : "Not available",
           icon: <FaClock className="mr-2 text-white" />,
         },
         {
           label: "Account Created",
           value: user?.metadata?.creationTime
             ? new Date(user.metadata.creationTime).toLocaleDateString()
-            : "N/A",
+            : "Not available",
           icon: <FaCalendarAlt className="mr-2 text-white" />,
         },
         {
-          label: "User ID (UID)",
+          label: "User ID",
           value: user?.uid,
           icon: <FaIdBadge className="mr-2 text-white" />,
         },
         {
           label: "Auth Provider",
           value: user?.providerData?.[0]?.providerId
-            ? user.providerData?.[0]?.providerId.replace(
-                "firebase.com",
-                "Email/Password"
-              )
-            : "N/A",
+            ? user.providerData[0].providerId
+                .replace("google.com", "Google")
+                .replace("facebook.com", "Facebook")
+                .replace("password", "Email/Password")
+            : "Email/Password",
           icon: <FaCog className="mr-2 text-white" />,
         },
       ],
@@ -103,7 +105,7 @@ const ProfileInfo = () => {
   ];
 
   return (
-    <div>
+    <div className="bg-gray-800">
       {/* Hero Section */}
       <div
         className="relative h-64 pt-16 flex items-center justify-center bg-cover bg-center bg-no-repeat"
@@ -119,8 +121,10 @@ const ProfileInfo = () => {
           </h1>
         </div>
       </div>
-      <div className="min-h-screen bg-gray-800 p-4 sm:p-6 lg:p-8">
-        <div className="bg-gray-700 rounded-lg shadow-lg container mx-auto overflow-hidden">
+
+      {/* Profile Content */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-gray-700 rounded-lg shadow-lg overflow-hidden">
           {/* Profile Header */}
           <div className="p-6 bg-gray-900 text-white text-center">
             {user?.photoURL ? (
@@ -136,18 +140,18 @@ const ProfileInfo = () => {
             <h2 className="text-2xl font-bold text-yellow-500 mb-1">
               {user?.displayName || "Guest User"}
             </h2>
-            <p className="text-white">{user?.email || "email@example.com"}</p>
+            <p className="text-gray-300">{user?.email || "email@example.com"}</p>
           </div>
 
           {/* Profile Details */}
           <div className="p-6 space-y-8">
             {/* Profile Header */}
-            <div className="space-y-1">
+            <div className="space-y-3">
               <h3 className="text-2xl font-bold text-yellow-500 flex items-center">
                 <FaUserCircle className="w-6 h-6 mr-3" />
                 Profile Information
               </h3>
-              <div className="h-0.5 w-full bg-gray-600 opacity-50"></div>
+              <div className="h-px w-full bg-gray-600"></div>
             </div>
 
             {/* Profile Sections */}
@@ -167,11 +171,11 @@ const ProfileInfo = () => {
                   </div>
 
                   {/* Section Items */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {section.items.map((item, itemIndex) => (
                       <div
                         key={itemIndex}
-                        className="flex items-start space-x-3 p-3 bg-gray-800 rounded-lg hover:bg-gray-750 transition-colors"
+                        className="flex items-start space-x-3 p-4 bg-gray-800 rounded-lg hover:bg-gray-750 transition-colors duration-200"
                       >
                         <div className="text-yellow-500 mt-0.5">
                           {React.cloneElement(item.icon, {
@@ -182,8 +186,8 @@ const ProfileInfo = () => {
                           <p className="text-sm font-medium text-yellow-400 mb-1">
                             {item.label}
                           </p>
-                          <p className="text-white text-sm break-words">
-                            {item.value || "N/A"}
+                          <p className="text-gray-00 text-sm break-words">
+                            {item.value}
                           </p>
                         </div>
                       </div>
@@ -192,17 +196,6 @@ const ProfileInfo = () => {
                 </div>
               ))}
             </div>
-
-            {/* Optional Edit Button (uncomment when needed) */}
-            {/* <div className="pt-4">
-    <button
-      onClick={() => alert("Edit Profile clicked!")}
-      className="px-5 py-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-medium rounded-md transition-colors flex items-center justify-center space-x-2"
-    >
-      <FaEdit className="w-4 h-4" />
-      <span>Edit Profile</span>
-    </button>
-  </div> */}
           </div>
         </div>
       </div>
