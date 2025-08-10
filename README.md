@@ -5,9 +5,8 @@ A full-stack web application designed to streamline the organization and partici
 ## 🌐 Live Website
 [Visit Now 🚀](https://stridez-b25a1.web.app/)
 
-<!-- ## 🔗 Repositories
-- [Client Side Repository](CLIENT_REPO_URL)
-- [Server Side Repository](SERVER_REPO_URL) -->
+## 🔗 Repositories
+- [Server Side Repository](https://github.com/iktushar01/Marathon-Management-System-Server.git)
 
 ## 🌟 Features
 
