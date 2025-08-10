@@ -2,9 +2,11 @@ import { ArrowRight } from 'lucide-react';
 import React, { useContext } from 'react';
 import { AuthContext } from '../../Contexts/AuthContext';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function LogOutBtn() {
   const { signOutUser } = useContext(AuthContext);
+  const navigate = useNavigate(); // Initialize navigate
 
   const handleSignOut = () => {
     Swal.fire({
@@ -21,7 +23,18 @@ function LogOutBtn() {
     }).then((result) => {
       if (result.isConfirmed) {
         signOutUser()
-          .catch(error => console.error(error));
+          .then(() => {
+            navigate('/'); // Navigate to home after successful logout
+          })
+          .catch(error => {
+            console.error(error);
+            // Optionally show error message to user
+            Swal.fire({
+              title: 'Error!',
+              text: 'Failed to log out',
+              icon: 'error'
+            });
+          });
       }
     });
   };
