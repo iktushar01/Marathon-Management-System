@@ -11,24 +11,28 @@ const Marathons = () => {
     order: "desc",
   });
 
-  const handleSortChange = async (field, order) => {
-    try {
-      const response = await fetch(
-        `/marathons?sortBy=${field}&sortOrder=${order}`
-      );
-      const sortedMarathons = await response.json();
-      setMarathons(sortedMarathons);
-      setSortConfig({ field, order });
-    } catch (error) {
-      console.error("Error sorting marathons:", error);
-    }
+  const handleSortChange = (field, order) => {
+    const sortedMarathons = [...marathons].sort((a, b) => {
+      const dateA = new Date(a[field]);
+      const dateB = new Date(b[field]);
+      
+      if (order === "asc") {
+        return dateA - dateB;
+      } else {
+        return dateB - dateA;
+      }
+    });
+    
+    setMarathons(sortedMarathons);
+    setSortConfig({ field, order });
   };
 
   return (
     <div className="min-h-screen bg-gray-900">
       <Helmet>
-        <title> Marathon | stridez</title>
+        <title>Marathon | stridez</title>
       </Helmet>
+      
       {/* Hero Section */}
       <div
         className="relative h-64 md:h-64 flex items-center justify-center pt-18 md:pt-16 bg-cover bg-center bg-no-repeat"
@@ -45,40 +49,68 @@ const Marathons = () => {
         </div>
       </div>
 
-      {/* Enhanced Sorting Controls */}
-      <div className="container mx-auto px-6 pt-6 flex justify-end space-x-4">
-        <div className="flex items-center space-x-2">
-          <span className="text-white">Sort by:</span>
-          <select
-            value={sortConfig.field}
-            onChange={(e) => handleSortChange(e.target.value, sortConfig.order)}
-            className="bg-gray-800 text-white border border-yellow-400 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          >
-            <option value="createdAt">Creation Date</option>
-            <option value="marathonStartDate">Marathon Date</option>
-          </select>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <span className="text-white">Order:</span>
-          <select
-            value={sortConfig.order}
-            onChange={(e) => handleSortChange(sortConfig.field, e.target.value)}
-            className="bg-gray-800 text-white border border-yellow-400 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          >
-            <option value="desc">Newest First</option>
-            <option value="asc">Oldest First</option>
-          </select>
+      {/* Sorting Controls */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 shadow-lg">
+          <div className="w-full sm:w-auto">
+            <h2 className="text-white text-xl font-semibold mb-2 sm:mb-0">
+              Filter Events
+            </h2>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <div className="flex-1 sm:flex-none">
+              <label htmlFor="sort-field" className="block text-sm font-medium text-gray-300 mb-1">
+                Sort by
+              </label>
+              <select
+                id="sort-field"
+                value={sortConfig.field}
+                onChange={(e) => handleSortChange(e.target.value, sortConfig.order)}
+                className="w-full bg-gray-700 text-white border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+              >
+                <option value="marathonStartDate">Marathon Date</option>
+                <option value="startRegDate">Registration Start</option>
+                <option value="createdAt">Date Added</option>
+              </select>
+            </div>
+            
+            <div className="flex-1 sm:flex-none">
+              <label htmlFor="sort-order" className="block text-sm font-medium text-gray-300 mb-1">
+                Order
+              </label>
+              <select
+                id="sort-order"
+                value={sortConfig.order}
+                onChange={(e) => handleSortChange(sortConfig.field, e.target.value)}
+                className="w-full bg-gray-700 text-white border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+              >
+                <option value="desc">Newest First</option>
+                <option value="asc">Oldest First</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Marathons Grid */}
-      <div className="container mx-auto">
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-6">
-          {marathons.map((marathon) => (
-            <MarathonsCard key={marathon._id} marathon={marathon} />
-          ))}
-        </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        {marathons.length === 0 ? (
+          <div className="text-center py-12">
+            <h3 className="text-2xl text-gray-300 font-medium">
+              No marathons available at the moment
+            </h3>
+            <p className="text-gray-400 mt-2">
+              Check back later for upcoming events
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {marathons.map((marathon) => (
+              <MarathonsCard key={marathon._id} marathon={marathon} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
