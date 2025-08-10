@@ -16,7 +16,7 @@ const Home = () => {
   // Function to select 6 random marathons
   const getRandomMarathons = () => {
     const shuffled = [...allMarathons].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 6);
+    return shuffled.slice(0, 8);
   };
 
   // Set initial random marathons
@@ -89,7 +89,7 @@ const Home = () => {
         </div>
 
         <motion.div
-          className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-6"
+          className="grid gap-6 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-6"
           variants={containerVariants}
           initial="hidden"
           animate={isAnimating ? "hidden" : "show"}
